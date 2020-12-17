@@ -40,12 +40,12 @@ module mkAXIMultiplier(AXIMultiplier);
 
     rule handleWriteRequest;
         let r <- slave_write.request.get();
-		$display("Address %d",r.addr);
+		//$display("Address %d",r.addr);
         if(r.addr == 0) begin
             operand_1 <= r.data; 
         end
         else if(r.addr == 1) begin 
-			$display("Check in %d",r.data);
+			//$display("Check in %d",r.data);
             operand_2 <= r.data;
         end
         slave_write.response.put(AXI4_Lite_Write_Rs_Pkg{resp: OKAY});
