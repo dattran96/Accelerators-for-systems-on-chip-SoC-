@@ -1,4 +1,4 @@
-package AXIMultiplier;
+package AXIConverter;
 
 import BlueAXI::*;
 import GetPut::*;
@@ -13,23 +13,28 @@ interface AXIConverter;
     (* prefix = "M00_AXI" *)
     interface AXI4_Lite_Master_Rd_Fab#(32, 32) master_read_fab;
     (* prefix = "M00_AXI" *)
-    interface AXI4_Lite_Master_Wr_Fab#(32, 32) master_write_fab:
+    interface AXI4_Lite_Master_Wr_Fab#(32, 32) master_write_fab;
 
 endinterface
 
 (*clock_prefix = "aclk", reset_prefix = "aresetn"*)
 module mkAXIConverter(AXIConverter);
-    AXI4_Lite_Slave_Rd#(32, 64) slave_read <- mkAXI4_Lite_Slave_Rd(2);
-    AXI4_Lite_Slave_Wr#(32, 64) slave_write <- mkAXI4_Lite_Slave_Wr(2);
+    AXI4_Lite_Slave_Rd#(32, 32) slave_read <- mkAXI4_Lite_Slave_Rd(2);
+    AXI4_Lite_Slave_Wr#(32, 32) slave_write <- mkAXI4_Lite_Slave_Wr(2);
     //Ask why here the buffer size is 2
-    AXI_Lite_Master_Rd#(32, 32) master_read <- mkAXI4_Lite_Master_Rd(2);
-    AXI_Lite_Master_Wr#(32, 32) master_write <- mkAXI4_Lite_Master_Wr(2);
+    AXI4_Lite_Master_Rd#(32, 32) master_read <- mkAXI4_Lite_Master_Rd(2);
+    AXI4_Lite_Master_Wr#(32, 32) master_write <- mkAXI4_Lite_Master_Wr(2);
     //What if I put here Bit or Int??
     Reg#(Bit#(32)) address_image_1 <- mkReg(0);
     Reg#(Bit#(32)) address_image_2 <- mkReg(0);
     //If want to use only 1 bit for these signal-> how to transfer over AXI efficiently?
     Reg#(Bit#(32)) start <- mkReg(0);
-    Reg#(Bit#(32)) conversion_finished <- mkReg(0)
+    Reg#(Bit#(32)) conversion_finished <- mkReg(0);
+
+    Bit#(5) addr_image_1 = 5'b11111;
+    Bit#(5) addr_image_2 = 5'b11011;
+    Bit#(5) addr_start = 5'b10111;
+    Bit#(5) addr_conversion_finished = 5'b11111;
 
     Reg#(Bool) read_flag <- mkReg(False);
     Reg#(Bit#(5)) read_address <- mkReg(0);
@@ -41,16 +46,17 @@ module mkAXIConverter(AXIConverter);
     endrule
 
     rule handleReadData if(read_flag);
-        if(!(read_address & 5'b11111)) begin // Check address 0
+       
+        if((read_address & addr_image_1) == 0) begin // Check address 0
             slave_read.response.put(AXI4_Lite_Read_Rs_Pkg{ data: zExtend(pack(address_image_1)), resp: OKAY});
         end
-        else if(!(read_address & 5'b11011) begin // Check address 4
+        else if((read_address & addr_image_2) == 0) begin // Check address 4
             slave_read.response.put(AXI4_Lite_Read_Rs_Pkg{ data: zExtend(pack(address_image_2)), resp: OKAY});
         end 
-        else if(!(read_address & 5'b10111) begin // Check address 8
+        else if((read_address & addr_start) == 0) begin // Check address 8
             slave_read.response.put(AXI4_Lite_Read_Rs_Pkg{ data: zExtend(pack(start)), resp: OKAY});
         end
-        else if(!(read_address & 5'b01111) begin // Check address 16
+        else if((read_address & addr_conversion_finished) == 0) begin // Check address 16
         slave_read.response.put(AXI4_Lite_Read_Rs_Pkg{ data: zExtend(pack(conversion_finished)), resp: OKAY});
         end
         read_flag <= False;
@@ -68,15 +74,15 @@ module mkAXIConverter(AXIConverter);
     endrule
 
     rule handleWriteData if(write_flag);
-        if(!(read_address & 5'b11111)) begin // Check address 0
+        if((read_address & addr_image_1) == 0) begin // Check address 0
             address_image_1 <= write_data;
             slave_write.response.put(AXI4_Lite_Write_Rs_Pkg{resp: OKAY});
         end
-        else if(!(read_address & 5'b11011) begin // Check address 4
+        else if((read_address & addr_image_2) == 0) begin // Check address 4
             address_image_1 <= write_data;
             slave_write.response.put(AXI4_Lite_Write_Rs_Pkg{resp: OKAY});
         end 
-        else if(!(read_address & 5'b10111) begin // Check address 8
+        else if((read_address & addr_start) == 0) begin // Check address 8
             start <= write_data;
             conversion_finished <= 0;
             slave_write.response.put(AXI4_Lite_Write_Rs_Pkg{resp: OKAY});
@@ -89,31 +95,31 @@ module mkAXIConverter(AXIConverter);
     Reg#(Bit#(32)) ddr_read_count <- mkReg(0);
 
     rule readRequest if( start != 0 && conversion_finished == 0 && !converting_flag);
-        axi_lite_read(master_read, address_image_1 + ddr_read_count);
+        axi4_lite_read(master_read, address_image_1 + ddr_read_count);
         ddr_read_count <= ddr_read_count + 4;
         converting_flag <= True;
     endrule 
 
     Reg#(Bool) response_flag <- mkReg(False);
 
-    Reg#(Bit#(8)) red <- mkReg(0);
-    Reg#(Bit#(8)) green <- mkReg(0);
-    Reg#(Bit#(8)) blue <- mkReg(0);
+    Reg#(Bit#(32)) red <- mkReg(0);
+    Reg#(Bit#(32)) green <- mkReg(0);
+    Reg#(Bit#(32)) blue <- mkReg(0);
 
     rule handelReadResponse if(!response_flag);
         let r <- axi4_lite_read_response(master_read);
         //The way take value here are not clear, it depends on how data is written into memory
-        reg <= r.data[7:0];
-        reg <= r.data[15:8];
-        reg <= r.data[23:16];
+        red <= zExtend(r[7:0]);
+        green <= zExtend(r[15:8]);
+        blue <= zExtend(r[23:16]);
         response_flag <= True;
     endrule
 
     Reg#(Bit#(32)) gray_data <- mkReg(0);
-    Reg#(Bool) start_write_request <- mkReg(0);
+    Reg#(Bool) start_write_request <- mkReg(False);
 
     rule convertRGB2Gray if(response_flag);
-        gray_data <= red*0.33 + green*0.33 + blue*0.33;
+        gray_data <= (red + green + blue)/3;
         response_flag <= False;
         start_write_request <= True;
     endrule
@@ -121,7 +127,7 @@ module mkAXIConverter(AXIConverter);
     Reg#(Bit#(32)) ddr_write_count <- mkReg(0);
 
     rule writeRequest if(start_write_request);
-        axi_lite_write(master_write, address_image_2 + ddr_write_count, gray_data);
+        axi4_lite_write(master_write, address_image_2 + ddr_write_count, gray_data);
         if( ddr_write_count == 512) begin // Check if all pixels are finished -> write to converting_finished register  
             conversion_finished <= 1;
         end
