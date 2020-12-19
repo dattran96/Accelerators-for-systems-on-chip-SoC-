@@ -1,5 +1,5 @@
 #include <linux/kernel.h>
-#include <linux/init.h>
+//#include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kdev_t.h>
 #include <linux/fs.h>
@@ -7,10 +7,14 @@
 #include <linux/device.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
+#include <linux/io.h>
+
 
 #define mem_size 1024
 #define IOSTART 0x200
 #define IOEXTEND 0x40
+//#define base_addr 0x00A0000000
+#define base_addr 0x0400000000
 static char __iomem *mapped;
 static unsigned long iostart = IOSTART,ioextend =IOEXTEND,ioend;
 
@@ -58,9 +62,13 @@ static my_release(struct inode*inode,struct file*file)
 static ssize_t my_read(struct file*filp, char __user*buf,size_t len,loff_t*off)
 {
 	
-	mapped = ioport_map(iostart,ioextend);
-	device_read =  ioread32(mapped);
-	copy_to_user(buf,kernel_buffer,mem_size); // modify to device_read to get the data
+	//mapped = ioport_map(iostart,ioextend);
+	mapped = ioremap(base_addr,3);
+	device_read = ioread32(mapped+4);
+	printk(KERN_INFO"data is %d \n",device_read);
+	printk(KERN_INFO"string length is %d \n",strlen(buf));
+
+	copy_to_user(buf,&device_read,1); // modify to device_read to get the data
 	printk(KERN_INFO"Data read: DONE...\n");
 	return mem_size;
 }
@@ -68,8 +76,10 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len,loff_t*off)
 static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff_t *off)
 {
 	copy_from_user(kernel_buffer,buf,len);
-	mapped = ioport_map(iostart,ioextend);
-	iowrite32(10,mapped);
+	//mapped = ioport_map(iostart,ioextend);
+	mapped = ioremap(base_addr,3);	
+	iowrite32(11,mapped+4);
+	//iowrite64(10,mapped+1);
 	printk(KERN_INFO"Data is written sucessfully...\n");
 	return len;
 }

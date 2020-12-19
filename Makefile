@@ -1,11 +1,13 @@
-obj-m := chr_drv_ex1.o
+TARGET_MODULE:=dma_for_IPCORE
 
-KDIR := /lib/modules/$(shell uname -r)/build
-PWD := $(shell pwd)
-
-default: 
-	$(MAKE) -C $(KDIR) M=$(PWD) modules
-install:
-	$(MAKE) -C $(KDIR) M=$(PWD) module_install
+ifneq ($(KERNELRELEASE),)
+	#$(TARGET_MODULE)-objs := $(TARGET_MODULE).o
+	obj-m:=$(TARGET_MODULE).o	
+else	
+	BUILDSYSTEM_DIR:=/home/stud/nt92homu/echo2/linux-xlnx
+	PWD:=$(shell pwd)
+all:
+	$(MAKE) -C $(BUILDSYSTEM_DIR) M=$(PWD) modules
 clean:
-	$(MAKE) -C $(KDIR) M=$(PWD) clean
+	$(MAKE) -C $(BUILDSYSTEM_DIR) M=$(PWD) clean
+endif

@@ -1,1 +1,1 @@
-cmd_/home/tran/Ldd/chr_drv_ex1.mod := { echo  /home/tran/Ldd/chr_drv_ex1.o; echo; } > /home/tran/Ldd/chr_drv_ex1.mod
+cmd_/home/stud/nt92homu/echo2/task3/Accelerators-for-systems-on-chip-SoC-/chr_drv_ex1.mod := { echo  /home/stud/nt92homu/echo2/task3/Accelerators-for-systems-on-chip-SoC-/chr_drv_ex1.o; echo; } > /home/stud/nt92homu/echo2/task3/Accelerators-for-systems-on-chip-SoC-/chr_drv_ex1.mod
