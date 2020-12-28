@@ -1,4 +1,4 @@
-TARGET_MODULE:=dma_for_IPCORE
+TARGET_MODULE:=dma_for_IPCORE_2
 
 ifneq ($(KERNELRELEASE),)
 	#$(TARGET_MODULE)-objs := $(TARGET_MODULE).o
