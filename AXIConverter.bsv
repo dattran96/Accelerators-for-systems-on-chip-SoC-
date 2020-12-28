@@ -98,7 +98,7 @@ module mkAXIConverter(AXIConverter);
 
     rule readRequest if( start != 0 && conversion_finished == 0 && !converting_flag);
         axi4_lite_read(master_read, address_image_1 + ddr_read_count);
-        if( ddr_write_count == 98304) begin // Check if all pixels are finished -> write to converting_finished register  
+        if( ddr_write_count == (image_size*image_size*3)/8) begin // Check if all pixels are finished -> write to converting_finished register  
             ddr_read_count <= 0;
         end
         else begin
@@ -120,10 +120,10 @@ module mkAXIConverter(AXIConverter);
     rule writeRequest if(start_write_request && buffer.notEmpty());
         
         
-        //axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(pack(buffer.first())));
-        axi4_lite_write(master_write, address_image_2 + ddr_write_count, 64'd11);
+        axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(pack(buffer.first())));
+        //axi4_lite_write(master_write, address_image_2 + ddr_write_count, 64'd11);
         buffer.deq();
-        if( ddr_write_count == 98304) begin // Check if all pixels are finished -> write to converting_finished register  
+        if( ddr_write_count == (image_size*image_size*3)/8) begin // Check if all pixels are finished -> write to converting_finished register  
             conversion_finished <= 1;
             start <= 0;
             ddr_write_count <= 0;
