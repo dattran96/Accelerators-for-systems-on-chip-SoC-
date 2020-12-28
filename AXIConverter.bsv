@@ -119,7 +119,9 @@ module mkAXIConverter(AXIConverter);
     // Here could use CReg
     rule writeRequest if(start_write_request && buffer.notEmpty());
         
-        axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(pack(buffer.first())));
+        
+        //axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(pack(buffer.first())));
+        axi4_lite_write(master_write, address_image_2 + ddr_write_count, 64'd11);
         buffer.deq();
         if( ddr_write_count == 98304) begin // Check if all pixels are finished -> write to converting_finished register  
             conversion_finished <= 1;

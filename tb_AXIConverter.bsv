@@ -5,6 +5,9 @@ import AXI4_Lite_Master::*;
 import Connectable :: *;
 import AXI4_Lite_Slave::*;
 import AXI4_Lite_Types :: *;
+import GetPut::*;
+import BUtils :: *;
+import BlueAXI::*;
 
 
 
@@ -23,10 +26,48 @@ module mkAXIConverter_tb(Empty);
  mkConnection(axi_convert.master_read_fab, s_rd.fab);
  mkConnection(axi_convert.master_write_fab, s_wd.fab);
 
+ 
+// Add why can't put these rules behind
+//Read Slave channel 
+rule handleReadRequest;
+    let r <- s_rd.request.get();
+    $display("%d",r.addr);
+    if(r.addr[5:0] == 0) begin // Check address 0
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd10, resp: OKAY});
+    end
+    else if(r.addr[5:0] == 8) begin // Check address 4
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd20, resp: OKAY});
+    end 
+    else if(r.addr[5:0] == 16) begin // Check address 8
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd30, resp: OKAY});
+    end
+    else if(r.addr[5:0] == 24) begin // Check address 16
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd40, resp: OKAY});
+    end
+    else if(r.addr[5:0] == 32) begin 
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd50, resp: OKAY});
+    end
+    if(r.addr[5:0] == 40) begin // Check address 0
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd60, resp: OKAY});
+    end
+    else if(r.addr[5:0] == 48) begin // Check address 4
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd70, resp: OKAY});
+    end 
+    else if(r.addr[5:0] == 56) begin // Check address 8
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd80, resp: OKAY});
+    end
+endrule
+
+rule handleWriteRequest;
+    let r <- s_wd.request.get();
+    $display("Write adress %d",r.addr);
+    $display("Write Data %d", r.data);
+endrule
+
+
 rule write_register1(testState == 0);
 //write
-axi4_lite_write(m_wr,0,5550);
-
+axi4_lite_write(m_wr,0,0);
 testState <= testState+1;
 endrule
 
@@ -49,7 +90,7 @@ endrule
 
 rule write_register2(testState == 3);
 //write
-axi4_lite_write(m_wr,8,18);
+axi4_lite_write(m_wr,8,0);
 
 testState <= testState+1;
 endrule
@@ -72,7 +113,7 @@ endrule
 
 rule write_register3(testState == 6);
 //write
-axi4_lite_write(m_wr,16,99);
+axi4_lite_write(m_wr,32,512);
 
 testState <= testState+1;
 endrule
@@ -80,8 +121,9 @@ endrule
 rule read_register31(testState == 7);
 //read
     let r <- axi4_lite_write_response(m_wr);
+    
     if( r == OKAY) begin
-        axi4_lite_read(m_rd,16);
+        axi4_lite_read(m_rd,32);
         testState <= testState+1;
     end
 endrule
@@ -95,7 +137,8 @@ endrule
 
 rule write_register4(testState == 9);
 //write
-axi4_lite_write(m_wr,32,120);
+
+axi4_lite_write(m_wr,16,1);
 
 testState <= testState+1;
 endrule
@@ -104,7 +147,7 @@ rule read_register41(testState == 10);
 //read
     let r <- axi4_lite_write_response(m_wr);
     if( r == OKAY) begin
-        axi4_lite_read(m_rd,32);
+        axi4_lite_read(m_rd,16);
         testState <= testState+1;
     end
 endrule
@@ -116,5 +159,8 @@ rule read_register43(testState == 11);
     testState <= testState+1;
 endrule
 endmodule
+
+
+
 
 endpackage
