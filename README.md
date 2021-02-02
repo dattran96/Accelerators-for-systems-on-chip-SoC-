@@ -1,4 +1,4 @@
-# Accelerators for SoC with Xilinx ZynqMP-SoC ultra96
+# Accelerators for SoC with Xilinx ZynqMP-SoC ultra96 FPGA
 # From AXI-Lite to AXI-Full
 
 Authors: Minh Quang Tran  and Nguyen Tien Dat Tran  <br />
