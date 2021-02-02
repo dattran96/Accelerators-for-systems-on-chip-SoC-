@@ -3,7 +3,7 @@
 
 Authors: Minh Quang Tran  and Nguyen Tien Dat Tran  <br />
 
-
+Topic: Use Xilinx Ultra96 FPGA to accelerate operators in image processing area  <br />
 
 
 
@@ -26,6 +26,6 @@ Task 2 has 4 folder:
 
 Task 3: Grayscale image converter  <br />
 
-Task4: Upgrade frome AXI Lite to AXI Full   <br />
+Task4: Upgrade frome AXI Lite to AXI Full for faster image conversion   <br />
     
 Task 5: Accelerator for a Sobel Filter in image processing area. <br />
