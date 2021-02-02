@@ -1,6 +1,13 @@
 # Accelerators for SoC with Xilinx ZynqMP-SoC ultra96
 # From AXI-Lite to AXI-Full
 
+Authors: 
+Minh Quang Tran  <br />
+Nguyen Tien Dat Tran  <br />
+
+
+
+
 
 Task 1 has two files: 
     
