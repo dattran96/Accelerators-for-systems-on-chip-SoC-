@@ -1,0 +1,8 @@
+build/AXIConverter.bo: /home/stud/nt92homu/Desktop/Task5/src/AXIConverter.bsv 
+build/save_Testbench.bo: /home/stud/nt92homu/Desktop/Task5/src/save_Testbench.bsv build/TestHelper.bo build/TestsMainTest.bo
+build/TestHelper.bo: /home/stud/nt92homu/Desktop/Task5/src/TestHelper.bsv 
+build/backup_writeRead_AXIConverter.bo: /home/stud/nt92homu/Desktop/Task5/src/backup_writeRead_AXIConverter.bsv 
+build/TestsMainTest.bo: /home/stud/nt92homu/Desktop/Task5/src/TestsMainTest.bsv build/AXIConverter.bo build/TestHelper.bo
+build/Testbench.bo: /home/stud/nt92homu/Desktop/Task5/src/Testbench.bsv build/AXIConverter.bo
+build/backupwrite_AXIConvert.bo: /home/stud/nt92homu/Desktop/Task5/src/backupwrite_AXIConvert.bsv 
+OBJS=build/AXIConverter.bo build/TestHelper.bo build/backup_writeRead_AXIConverter.bo build/TestsMainTest.bo build/save_Testbench.bo build/Testbench.bo build/backupwrite_AXIConvert.bo

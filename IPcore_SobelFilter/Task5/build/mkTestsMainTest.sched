@@ -1,0 +1,47 @@
+=== Generated schedule for mkTestsMainTest ===
+
+Method schedule
+---------------
+Method: go
+Ready signal: ((! testFSM_start_reg_1) || testFSM_fired) &&
+	      (! testFSM_start_reg)
+Sequenced after: done
+Conflicts: go
+ 
+Method: done
+Ready signal: True
+Conflict-free: done
+Sequenced before: go
+ 
+Rule schedule
+-------------
+Rule: testFSM_start_reg__dreg_update
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: testFSM_fired__dreg_update
+Predicate: True
+Blocking rules: (none)
+ 
+Rule: testFSM_restart
+Predicate: testFSM_start_reg_1 && (! testFSM_fired) &&
+	   ((! testFSM_abort.whas) || (! testFSM_abort.wget))
+Blocking rules: (none)
+ 
+Rule: testFSM_action_l13c17
+Predicate: testFSM_start_wire.whas && testFSM_start_wire.wget
+Blocking rules: (none)
+ 
+Rule: testFSM_fsm_start
+Predicate: ((! testFSM_start_reg_1) || testFSM_fired) && testFSM_start_reg
+Blocking rules: (none)
+ 
+Logical execution order: done,
+			 go,
+			 testFSM_restart,
+			 testFSM_fsm_start,
+			 testFSM_action_l13c17,
+			 testFSM_start_reg__dreg_update,
+			 testFSM_fired__dreg_update
+
+===============================================
