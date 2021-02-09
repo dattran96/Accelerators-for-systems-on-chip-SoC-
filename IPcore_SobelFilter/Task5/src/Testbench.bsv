@@ -31,45 +31,45 @@ module mkTestbench(Empty);
 //Read Slave channel 
 rule handleReadRequest;
     let r <- s_rd.request.get();
-    $display("Read address  %d",r.addr);
+    //$display("Read address  %d",r.addr);
     if(r.addr[5:0] == 0) begin // Check address 0
-        $display("Response data  %d ", 64'd10);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd10, resp: OKAY});
+        //$display("Response data  %d ", 64'd10);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h0706050403020100, resp: OKAY});
     end
     else if(r.addr[5:0] == 8) begin // Check address 4
-        $display("Response data %d ", 64'd20);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd20, resp: OKAY});
+        //$display("Response data %d ", 64'd20);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'hF00E0D0C0B0A0908, resp: OKAY});
     end 
     else if(r.addr[5:0] == 16) begin // Check address 8
-        $display("Response data %d ", 64'd30);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd30, resp: OKAY});
+        //$display("Response data %d ", 64'd30);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h1716151413121110, resp: OKAY});
     end
     else if(r.addr[5:0] == 24) begin // Check address 16
-        $display("Response data %d ", 64'd40);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd40, resp: OKAY});
+        //$display("Response data %d ", 64'd40);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h1F1E1D1C1B1A1918, resp: OKAY});
     end
     else if(r.addr[5:0] == 32) begin 
-        $display("Response data %d ", 64'd50);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd50, resp: OKAY});
+        //$display("Response data %d ", 64'd50);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h2726252423222120, resp: OKAY});
     end
     if(r.addr[5:0] == 40) begin // Check address 0
-        $display("Response data %d ", 64'd60);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd60, resp: OKAY});
+        //$display("Response data %d ", 64'd60);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h2F2E2D2C2B2A2928, resp: OKAY});
     end
     else if(r.addr[5:0] == 48) begin // Check address 4
-        $display("Response data %d ", 64'd70);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd70, resp: OKAY});
+        //$display("Response data %d ", 64'd70);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h3736353433323130, resp: OKAY});
     end 
     else if(r.addr[5:0] == 56) begin // Check address 8
-        $display("Response data %d ", 64'd80);
-        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'd80, resp: OKAY});
+        //$display("Response data %d ", 64'd80);
+        s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h3F3E3D3C3B3A3938, resp: OKAY});
     end
 endrule
 
 rule handleWriteRequest;
     let r <- s_wd.request.get();
-    $display("Write address %d",r.addr);
-    $display("Write Data %d \n", r.data);
+    //$display("Write address %d",r.addr);
+    //$display("Write Data %d \n", r.data);
 endrule
 
 
@@ -91,7 +91,7 @@ endrule
 rule read_register13(testState == 2);
     //read
     let r <- axi4_lite_read_response(m_rd);
-    $display("%d",r);
+    //$display("%d",r);
     testState <= testState+1;
 endrule
 
@@ -115,7 +115,6 @@ endrule
 rule read_register23(testState == 5);
     //read
     let r <- axi4_lite_read_response(m_rd);
-    $display("%d",r);
     testState <= testState+1;
 endrule
 
@@ -139,7 +138,7 @@ endrule
 rule read_register33(testState == 8);
     //read
     let r <- axi4_lite_read_response(m_rd);
-    $display("%d",r);
+    //$display("%d",r);
     testState <= testState+1;
 endrule
 
@@ -163,7 +162,7 @@ endrule
 rule read_register43(testState == 11);
     //read
     let r <- axi4_lite_read_response(m_rd);
-    $display("%d",r);
+    //$display("%d",r);
     testState <= testState+1;
 endrule
 endmodule

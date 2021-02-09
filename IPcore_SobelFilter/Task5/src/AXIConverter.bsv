@@ -161,68 +161,136 @@ module mkAXIConverter(AXIConverter);
    Reg#(Bit#(8)) reg31 <- mkReg(0);
    Reg#(Bit#(8)) reg32 <- mkReg(0);
    Reg#(Bit#(8)) reg33 <- mkReg(0);
-   FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(5);
-   FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(5);
+   FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(7);  //PAY ATTENTION, SUBJECT to CHANGE
+   FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(7);  //PAY ATTENTION, SUBJECT to CHANGE	
    Reg#(Bool) windowReady <- mkReg(False); //issue to other rules that data of 9 pixel are ready
    Reg#(Bool) windowSlide <- mkReg(False); // other rules set this bit to issue they need new window data
    Reg#(Bool) window_Initial <- mkReg(False);
    Reg#(Bool) rowBuffer_inital <- mkReg(True);
-   Reg#(Bit#(32)) bufferRowCount <- mkReg(0);
+   Reg#(Bit#(16)) bufferRowCount <- mkReg(0);
    Reg#(Bool) sobelConvert <- mkReg(False);
-
+   
+   Reg#(Bit#(16)) kernel_size <- mkReg(3); //PAY ATTENTION, SUBJECT to CHANGE
+   Reg#(Bit#(16)) image_length <- mkReg(10); //PAY ATTENTION, SUBJECT to CHANGE
    /* Initialize row buffer at the first time, since slide window operate correctly only if row buffer 1 and row buffer 2 are already filled */
    rule rowBufferInital if(rowBuffer_inital == True && rowBuffer_1.notFull() == True && rowBuffer_2.notFull() == True );
    	rowBuffer_1.enq(0); //Fill waste values until full
-	rowBuffer_2.enq(0); //Fill waste values until full	
-	if(rowBuffer_1.notFull() == False) begin
-		rowBuffer_inital <= False;
-		window_Initial <= True;
-		$display("Test Here");
-	end
+	rowBuffer_2.enq(0); //Fill waste values until full
+	$display("Test Here 1");	
    endrule
    
-   rule rowBufferInital_finish if(rowBuffer_1.notFull() == False);
+
+   	
+   
+   rule rowBufferInital_finish if(rowBuffer_1.notFull() == False && rowBuffer_inital == True);
    	rowBuffer_inital <= False;
 	window_Initial <= True;
+	$display("Test Here 2");
    endrule
    
    
    
-   
-    FIFOF#(Bit#(8)) testslideWindow <- mkSizedFIFOF(262144);
-    Reg#(Bit#(8)) testslideWindow_count <- mkReg(0);    
-    rule initial_testslideWindow if( testslideWindow_count < 255);
+    /* Simulate an Image*/
+    FIFOF#(Bit#(8)) testslideWindow <- mkSizedFIFOF(100); //PAY ATTENTION, SUBJECT to CHANGE
+    Reg#(Bit#(8)) testslideWindow_count <- mkReg(0); 
+    Reg#(Bool) testslideWindow_control <- mkReg(True);    
+    rule initial_testslideWindow if(testslideWindow_control == True); //test image 5 x 5 first
     	testslideWindow.enq(testslideWindow_count);
-    	testslideWindow_count <= testslideWindow_count + 1;   
+    	testslideWindow_count <= testslideWindow_count + 1;  
+    	$display("Test Here 3"); 
     endrule
-
-   Reg#(Bit#(8)) slide <- mkReg(0);    
+    
+    rule initial_testslideWindow_finish if( testslideWindow.notFull() == False && testslideWindow_control == True) ; //test image 5 x 5 first
+ 	testslideWindow_control <= False;
+    	$display("Test Here 4"); 
+    endrule
+/*	
+   rule print_fifo(testslideWindow_control == False);
+   	let r = testslideWindow.first;
+   	testslideWindow.deq;
+   	$display("FIFO element %d",r); 
+   endrule	
+*/	
+    
+    /* Questions: Seperate rule is the only way?*/ /* 3x3 Kernel and 5x5 7x7 Kernel */
+    
    /* Initialize window buffer, Fill up all pixels of 3x3 kernel and row 1 and row2, ready for next processing step */
-   rule windowBuffer_inital if(window_Initial == True && rowBuffer_inital == False);
-   	$display("Test Here 3");
-   	case(slide):		
-   	0:reg11 <= reg12;
-	1:reg12 <= reg13;
-	2:reg13 <= rowBuffer_1.first();
-	3:rowBuffer_1.enq(reg21);
-	4:reg21 <= reg22;
-	5:reg22 <= reg23;
-	6:reg23 <= rowBuffer_2.first();
-	7:rowBuffer_2.enq(reg31);
-	8:reg31 <= reg32;
-	9:reg32 <= reg33;
-	10:reg33 <= buffer_8bit.first();
-   	11:bufferRowCount <= bufferRowCount + 1;
-   	endcase
-	if(bufferRowCount >= 1033) begin //512+ 512+ 9
+    Reg#(Bool) slide <- mkReg(False);    //command register
+    Reg#(Bool) slide_finish <- mkReg(False);    //status register	
+    Reg#(Bit#(16)) slide_position <- mkReg(0); //Count from 0
+    Reg#(Bit#(8)) state_temp <- mkReg(0);
+   rule windowBuffer_inital if(window_Initial == True && rowBuffer_inital == False && state_temp==0 && testslideWindow_control == False);
+  	$display("Test Here 5");
+   	reg11 <= reg12; 
+	reg12 <= reg13;
+	reg13 <= rowBuffer_1.first; rowBuffer_1.deq; 
+	state_temp <= state_temp +1 ;
+   endrule
+   
+   rule windowBuffer_inital_2(state_temp ==1);
+   	rowBuffer_1.enq(reg21); $display("Test Here 6");
+	reg21 <= reg22;
+	reg22 <= reg23;
+	reg23 <= rowBuffer_2.first(); rowBuffer_2.deq;
+	state_temp <= state_temp +1 ;
+   endrule
+
+   rule windowBuffer_inital_3(state_temp ==2);
+   	$display("Test Here 7");	
+	rowBuffer_2.enq(reg31);
+	reg31 <= reg32;
+	reg32 <= reg33;
+	reg33 <= testslideWindow.first(); testslideWindow.deq; //PAY ATTENTION, REPLACE WITH "buffer_8bit" to get data via AXI
+	state_temp <=3;
+	bufferRowCount <= bufferRowCount + 1;
+	slide_finish <= True;
+	if( slide_position < image_length)
+		slide_position <= slide_position + 1;
+	else
+		slide_position <= 1;
+   endrule
+  
+  /*Control state, this state checks if the sliding window should continue sliding*/ 
+  Reg#(Bool) windowBuffer_once_inital <- mkReg(False);    //status register	
+  rule windowBuffer_inital_end if(window_Initial == True && rowBuffer_inital == False && state_temp ==3 && windowBuffer_once_inital == False);	
+	if(bufferRowCount >= image_length + image_length + kernel_size) begin //512+ 512+ 9 //PAY ATTENTION  change
+		window_Initial <= False;
+		windowBuffer_once_inital <= True;
+		sobelConvert <= True; //command
+		slide_finish <= False; //Reset slide status
+		$display("Test Here 8");
+	end
+	else
+		state_temp <= 0; 
+  endrule
+    
+  
+  /*Control state, this state checks if the sliding window should continue sliding and how many units it will slide*/ 
+  rule windowBuffer_slide if (slide == True && state_temp ==3);	
+	$display("Test slide position %d",slide_position );
+	if(bufferRowCount >= image_length*image_length+1) begin
 		window_Initial <= False;
 		sobelConvert <= True;
+		slide <= False;
 	end
-    endrule
+	
+	else if( slide_finish == False ||  slide_position == 1 ||  slide_position == 2) begin //Command to slide //APPLY ONLY FOR 3x3 
+		state_temp <= 0;
+		window_Initial <= True;
+		sobelConvert <= False;
+	end
+	
+	else begin
+		sobelConvert <= True;
+		slide <= False;
+		slide_finish <= False; //Reset slide status
+	end
+
+		
+  endrule   
 
      /* slide window to make room to get new data in, this will create new window data for sobel operator */
-     
-   rule windowBuffer_slide if(sobelConvert == False && window_Initial == False && rowBuffer_inital == False ); //Sobel needs new data, this sobelConvert is a status to tell window buffer to slide
+   /* rule windowBuffer_slide if(sobelConvert == False && window_Initial == False && rowBuffer_inital == False ); //Sobel needs new data, this sobelConvert is a status to tell window buffer to slide
    	reg11 <= reg12;
 	reg12 <= reg13;
 	reg13 <= rowBuffer_1.first();
@@ -235,10 +303,10 @@ module mkAXIConverter(AXIConverter);
 	reg32 <= reg33;
 	reg33 <= testslideWindow.first();  //Attention, replay buffer_8bit with testslideWindow	
 	/* TODO, Special case, get not only 1 pixel but 3 pixel if it's poiting at the begin of each row, so we need to slide not only one but three times*/
-    endrule
+    
    
 
-   Reg#(Bit#(8)) reg_test <- mkReg(10);        
+
    rule sobelOperator(sobelConvert == True);
 	/*TODO, Convert here*/
 	$display("%d Hello World!", reg11);
@@ -250,8 +318,11 @@ module mkAXIConverter(AXIConverter);
 	$display("%d Hello World!", reg31);
 	$display("%d Hello World!", reg32);
 	$display("%d Hello World!", reg33);
+	$display("Next Window");
+	
 	/*Need another window*/
 	sobelConvert <= False;
+	slide <= True;
    endrule
 
 

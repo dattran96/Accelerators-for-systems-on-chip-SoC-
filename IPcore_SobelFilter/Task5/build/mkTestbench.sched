@@ -250,34 +250,51 @@ Predicate: axi_convert_rowBuffer_1.i_notFull &&
 Blocking rules: (none)
  
 Rule: axi_convert_rowBufferInital_finish
-Predicate: ! axi_convert_rowBuffer_1.notFull
+Predicate: (! axi_convert_rowBuffer_1.notFull) && axi_convert_rowBuffer_inital
 Blocking rules: (none)
  
 Rule: axi_convert_initial_testslideWindow
 Predicate: axi_convert_testslideWindow.i_notFull &&
-	   (! (axi_convert_testslideWindow_count == 8'd255))
+	   axi_convert_testslideWindow_control
+Blocking rules: (none)
+ 
+Rule: axi_convert_initial_testslideWindow_finish
+Predicate: (! axi_convert_testslideWindow.notFull) &&
+	   axi_convert_testslideWindow_control
 Blocking rules: (none)
  
 Rule: axi_convert_windowBuffer_inital
 Predicate: axi_convert_rowBuffer_1.i_notEmpty &&
+	   axi_convert_window_Initial && (! axi_convert_rowBuffer_inital) &&
+	   (axi_convert_state_temp == 8'd0) &&
+	   (! axi_convert_testslideWindow_control)
+Blocking rules: (none)
+ 
+Rule: axi_convert_windowBuffer_inital_2
+Predicate: axi_convert_rowBuffer_1.i_notFull &&
 	   axi_convert_rowBuffer_2.i_notEmpty &&
-	   axi_convert_buffer_8bit.i_notEmpty &&
-	   axi_convert_window_Initial && (! axi_convert_rowBuffer_inital)
+	   (axi_convert_state_temp == 8'd1)
+Blocking rules: axi_convert_rowBufferInital
+ 
+Rule: axi_convert_windowBuffer_inital_3
+Predicate: axi_convert_rowBuffer_2.i_notFull &&
+	   axi_convert_testslideWindow.i_notEmpty &&
+	   (axi_convert_state_temp == 8'd2)
+Blocking rules: axi_convert_rowBufferInital
+ 
+Rule: axi_convert_windowBuffer_inital_end
+Predicate: axi_convert_window_Initial && (! axi_convert_rowBuffer_inital) &&
+	   (axi_convert_state_temp == 8'd3) &&
+	   (! axi_convert_windowBuffer_once_inital)
 Blocking rules: (none)
  
 Rule: axi_convert_windowBuffer_slide
-Predicate: axi_convert_rowBuffer_1.i_notFull &&
-	   axi_convert_rowBuffer_2.i_notFull &&
-	   axi_convert_rowBuffer_1.i_notEmpty &&
-	   axi_convert_rowBuffer_2.i_notEmpty &&
-	   axi_convert_testslideWindow.i_notEmpty &&
-	   (! axi_convert_sobelConvert) && (! axi_convert_window_Initial) &&
-	   (! axi_convert_rowBuffer_inital)
-Blocking rules: (none)
+Predicate: axi_convert_slide && (axi_convert_state_temp == 8'd3)
+Blocking rules: axi_convert_windowBuffer_inital_end
  
 Rule: axi_convert_sobelOperator
 Predicate: axi_convert_sobelConvert
-Blocking rules: (none)
+Blocking rules: axi_convert_windowBuffer_slide
  
 Rule: axi_convert_writeRequest
 Predicate: axi_convert_buffer.i_notEmpty &&
@@ -537,11 +554,15 @@ Logical execution order: forward2,
 			 s_wd_isRst_isResetAssertedUpdate,
 			 axi_convert_localDataBuffer_8bit,
 			 axi_convert_rowBufferInital,
+			 axi_convert_rowBufferInital_finish,
 			 axi_convert_initial_testslideWindow,
+			 axi_convert_initial_testslideWindow_finish,
 			 axi_convert_windowBuffer_slide,
 			 axi_convert_sobelOperator,
 			 axi_convert_windowBuffer_inital,
-			 axi_convert_rowBufferInital_finish,
+			 axi_convert_windowBuffer_inital_2,
+			 axi_convert_windowBuffer_inital_3,
+			 axi_convert_windowBuffer_inital_end,
 			 axi_convert_slave_read_putOutData,
 			 forward7,
 			 forward8,
