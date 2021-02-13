@@ -238,8 +238,7 @@ Blocking rules: (none)
 Rule: axi_convert_localDataBuffer_8bit
 Predicate: axi_convert_buffer.i_notEmpty &&
 	   axi_convert_buffer_8bit.i_notFull &&
-	   (! axi_convert_buffer_8bit.notEmpty) &&
-	   (axi_convert_enq_order == 3'd0)
+	   (! axi_convert_buffer_8bit.notEmpty)
 Blocking rules: (none)
  
 Rule: axi_convert_rowBufferInital
@@ -293,14 +292,34 @@ Predicate: axi_convert_slide && (axi_convert_state_temp == 8'd3)
 Blocking rules: axi_convert_windowBuffer_inital_end
  
 Rule: axi_convert_sobelOperator
-Predicate: axi_convert_sobelConvert
+Predicate: axi_convert_sobelConvert && (axi_convert_sobelState == 8'd0)
+Blocking rules: (none)
+ 
+Rule: axi_convert_absSum1
+Predicate: axi_convert_sobelConvert && (axi_convert_sobelState == 8'd1)
+Blocking rules: (none)
+ 
+Rule: axi_convert_sumUp
+Predicate: axi_convert_sobelConvert && (axi_convert_sobelState == 8'd2)
+Blocking rules: (none)
+ 
+Rule: axi_convert_limitMagnitude
+Predicate: axi_convert_sobelConvert && (axi_convert_sobelState == 8'd3)
+Blocking rules: (none)
+ 
+Rule: axi_convert_thresholdPixel
+Predicate: axi_convert_sobelConvert && (axi_convert_sobelState == 8'd4)
+Blocking rules: (none)
+ 
+Rule: axi_convert_writePixel
+Predicate: axi_convert_sobelConvert && (axi_convert_sobelState == 8'd5)
 Blocking rules: axi_convert_windowBuffer_slide
  
 Rule: axi_convert_writeRequest
 Predicate: axi_convert_buffer.i_notEmpty &&
 	   axi_convert_master_write_in.i_notFull &&
 	   axi_convert_buffer.notEmpty && (axi_convert_state_64 == 64'd2)
-Blocking rules: (none)
+Blocking rules: axi_convert_localDataBuffer_8bit
  
 Rule: axi_convert_requestResponse
 Predicate: axi_convert_master_write_out.i_notEmpty
@@ -557,10 +576,15 @@ Logical execution order: forward2,
 			 axi_convert_rowBufferInital_finish,
 			 axi_convert_initial_testslideWindow,
 			 axi_convert_initial_testslideWindow_finish,
-			 axi_convert_windowBuffer_slide,
 			 axi_convert_sobelOperator,
 			 axi_convert_windowBuffer_inital,
 			 axi_convert_windowBuffer_inital_2,
+			 axi_convert_absSum1,
+			 axi_convert_sumUp,
+			 axi_convert_limitMagnitude,
+			 axi_convert_thresholdPixel,
+			 axi_convert_windowBuffer_slide,
+			 axi_convert_writePixel,
 			 axi_convert_windowBuffer_inital_3,
 			 axi_convert_windowBuffer_inital_end,
 			 axi_convert_slave_read_putOutData,
