@@ -121,7 +121,7 @@ module mkAXIConverter(AXIConverter);
    Reg#(Bit#(64)) state_64 <- mkReg(0);
    rule readRequest if( start != 0 && conversion_finished == 0);
         axi4_lite_read(master_read, address_image_1 + ddr_read_count);
-        if( ddr_read_count == 56) begin // Check if all pixels are finished -> write to converting_finished register  
+        if( ddr_read_count == 262136) begin //PAY ATTENTION, SUBJECT to CHANGE, Check if all pixels are finished -> write to converting_finished register  
             ddr_read_count <= 0;
             start <= 0;
         end
@@ -162,8 +162,8 @@ module mkAXIConverter(AXIConverter);
    Reg#(Bit#(8)) reg31 <- mkReg(0);
    Reg#(Bit#(8)) reg32 <- mkReg(0);
    Reg#(Bit#(8)) reg33 <- mkReg(0);
-   FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(5);  //PAY ATTENTION, SUBJECT to CHANGE
-   FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(5);  //PAY ATTENTION, SUBJECT to CHANGE	
+   FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(509);  //PAY ATTENTION, SUBJECT to CHANGE
+   FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(509);  //PAY ATTENTION, SUBJECT to CHANGE	
    Reg#(Bool) windowReady <- mkReg(False); //issue to other rules that data of 9 pixel are ready
    Reg#(Bool) windowSlide <- mkReg(False); // other rules set this bit to issue they need new window data
    Reg#(Bool) window_Initial <- mkReg(False);
@@ -172,7 +172,7 @@ module mkAXIConverter(AXIConverter);
    Reg#(Bool) sobelConvert <- mkReg(False);
    
    Reg#(Bit#(32)) kernel_size <- mkReg(3); //PAY ATTENTION, SUBJECT to CHANGE
-   Reg#(Bit#(32)) image_length <- mkReg(8); //PAY ATTENTION, SUBJECT to CHANGE
+   Reg#(Bit#(32)) image_length <- mkReg(512); //PAY ATTENTION, SUBJECT to CHANGE
    /* Initialize row buffer at the first time, since slide window operate correctly only if row buffer 1 and row buffer 2 are already filled */
    rule rowBufferInital if(rowBuffer_inital == True && rowBuffer_1.notFull() == True && rowBuffer_2.notFull() == True );
    	rowBuffer_1.enq(0); //Fill waste values until full
@@ -242,6 +242,7 @@ module mkAXIConverter(AXIConverter);
 	reg31 <= reg32;
 	reg32 <= reg33;
 	reg33 <= buffer_8bit.first(); buffer_8bit.deq; //PAY ATTENTION, REPLACE "testslideWindow" WITH "buffer_8bit" to get data via AXI
+	//$display("%d Reg33", reg33);
 	state_temp <=3;
 	bufferRowCount <= bufferRowCount + 1;
 	slide_finish <= True;
@@ -309,29 +310,29 @@ module mkAXIConverter(AXIConverter);
     
    
 
-	Reg#(Int#(8)) gx_reg11 <- mkReg(-1);
-	Reg#(Int#(8)) gx_reg12 <- mkReg(0);
-	Reg#(Int#(8)) gx_reg13 <- mkReg(1);
-	Reg#(Int#(8)) gx_reg21 <- mkReg(-2);
-	Reg#(Int#(8)) gx_reg22 <- mkReg(0);
-	Reg#(Int#(8)) gx_reg23 <- mkReg(2);
-	Reg#(Int#(8)) gx_reg31 <- mkReg(-1);
-	Reg#(Int#(8)) gx_reg32 <- mkReg(0);
-	Reg#(Int#(8)) gx_reg33 <- mkReg(1);
+	Reg#(Int#(32)) gx_reg11 <- mkReg(-1);
+	Reg#(Int#(32)) gx_reg12 <- mkReg(0);
+	Reg#(Int#(32)) gx_reg13 <- mkReg(1);
+	Reg#(Int#(32)) gx_reg21 <- mkReg(-2);
+	Reg#(Int#(32)) gx_reg22 <- mkReg(0);
+	Reg#(Int#(32)) gx_reg23 <- mkReg(2);
+	Reg#(Int#(32)) gx_reg31 <- mkReg(-1);
+	Reg#(Int#(32)) gx_reg32 <- mkReg(0);
+	Reg#(Int#(32)) gx_reg33 <- mkReg(1);
 	
-	Reg#(Int#(8)) gy_reg11 <- mkReg(-1);
-	Reg#(Int#(8)) gy_reg12 <- mkReg(-2);
-	Reg#(Int#(8)) gy_reg13 <- mkReg(-1);
-	Reg#(Int#(8)) gy_reg21 <- mkReg(0);
-	Reg#(Int#(8)) gy_reg22 <- mkReg(0);
-	Reg#(Int#(8)) gy_reg23 <- mkReg(0);
-	Reg#(Int#(8)) gy_reg31 <- mkReg(1);
-	Reg#(Int#(8)) gy_reg32 <- mkReg(2);
-	Reg#(Int#(8)) gy_reg33 <- mkReg(1);	
+	Reg#(Int#(32)) gy_reg11 <- mkReg(-1);
+	Reg#(Int#(32)) gy_reg12 <- mkReg(-2);
+	Reg#(Int#(32)) gy_reg13 <- mkReg(-1);
+	Reg#(Int#(32)) gy_reg21 <- mkReg(0);
+	Reg#(Int#(32)) gy_reg22 <- mkReg(0);
+	Reg#(Int#(32)) gy_reg23 <- mkReg(0);
+	Reg#(Int#(32)) gy_reg31 <- mkReg(1);
+	Reg#(Int#(32)) gy_reg32 <- mkReg(2);
+	Reg#(Int#(32)) gy_reg33 <- mkReg(1);	
 	
-	Reg#(Int#(16)) sum_1 <- mkReg(0);
-	Reg#(Int#(16)) sum_2 <- mkReg(0);
-	Reg#(Int#(16)) sum_12 <- mkReg(0);
+	Reg#(Int#(32)) sum_1 <- mkReg(0);
+	Reg#(Int#(32)) sum_2 <- mkReg(0);
+	Reg#(Int#(32)) sum_12 <- mkReg(0);
 	
 	Reg#(Bit#(8)) sobelState <- mkReg(0);
    rule sobelOperator(sobelConvert == True && sobelState == 0);
@@ -347,8 +348,8 @@ module mkAXIConverter(AXIConverter);
 	//$display("%d Hello World!", reg33);
 	
 	//$display("Start Sobel Calculation");
-	sum_1 <= signExtend(gx_reg11*unpack(reg11)) + signExtend(gx_reg12*unpack(reg12)) + signExtend(gx_reg13*unpack(reg13))+ signExtend(gx_reg21*unpack(reg21))+ signExtend(gx_reg22*unpack(reg22))+ signExtend(gx_reg23*unpack(reg23))+ signExtend(gx_reg31*unpack(reg31))+ signExtend(gx_reg32*unpack(reg32))+ signExtend(gx_reg33*unpack(reg33));
-	sum_2 <= signExtend(gy_reg11*unpack(reg11)) + signExtend(gy_reg12*unpack(reg12)) + signExtend(gy_reg13*unpack(reg13))+ signExtend(gy_reg21*unpack(reg21))+ signExtend(gy_reg22*unpack(reg22))+ signExtend(gy_reg23*unpack(reg23))+ signExtend(gy_reg31*unpack(reg31))+ signExtend(gy_reg32*unpack(reg32))+ signExtend(gy_reg33*unpack(reg33));
+	sum_1 <= signExtend(gx_reg11*unpack(zExtend(reg11)) + gx_reg12*unpack(zExtend(reg12)) + gx_reg13*unpack(zExtend(reg13))+ gx_reg21*unpack(zExtend(reg21))+ gx_reg22*unpack(zExtend(reg22))+ gx_reg23*unpack(zExtend(reg23))+ gx_reg31*unpack(zExtend(reg31))+ gx_reg32*unpack(zExtend(reg32))+ gx_reg33*unpack(zExtend(reg33)));
+	sum_2 <= signExtend(gy_reg11*unpack(zExtend(reg11)) + gy_reg12*unpack(zExtend(reg12)) + gy_reg13*unpack(zExtend(reg13))+ gy_reg21*unpack(zExtend(reg21))+ gy_reg22*unpack(zExtend(reg22))+ gy_reg23*unpack(zExtend(reg23))+ gy_reg31*unpack(zExtend(reg31))+ gy_reg32*unpack(zExtend(reg32))+ gy_reg33*unpack(zExtend(reg33)));
 	sobelState <= sobelState + 1;
    endrule
    
@@ -357,6 +358,7 @@ module mkAXIConverter(AXIConverter);
    FIFOF#(Bit#(8)) sum1Buffer <- mkSizedFIFOF(5);
    FIFOF#(Bit#(8)) sum2Buffer <- mkSizedFIFOF(5);  
    rule absSum1(sobelConvert == True && sobelState == 1);
+   	//$display("Sum1 %d ", sum_1);
    	if( sum_1 < 0) begin
    		sum_1 <= sum_1*-1;
    		//sum1Buffer.enq(-sum_1);
@@ -385,13 +387,14 @@ module mkAXIConverter(AXIConverter);
    endrule
    
    rule limitMagnitude(sobelConvert == True && sobelState == 3);
+   	//$display("Sum %d and %d is %d", sum_1,sum_2,sum_12);
    	if (sum_12 > 255) begin
    		sum_12 <= 255;
    	end
    	sobelState <= sobelState + 1;
    endrule
    
-   Reg#(Int#(16)) threshold <- mkReg(200);
+   Reg#(Int#(32)) threshold <- mkReg(70);
    Reg#(Bit#(8)) outPixel <- mkReg(0);		
    rule thresholdPixel(sobelConvert == True && sobelState == 4);
    	if (sum_12 <= threshold) begin
@@ -459,7 +462,7 @@ module mkAXIConverter(AXIConverter);
         axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(buffer_out.first()));
         //axi4_lite_write(master_write, address_image_2 + ddr_write_count, 64'd11);
         buffer_out.deq();
-        if( ddr_write_count >= 28 ) begin // PAY ATTENTION, SUBJECT TO CHANGE,Check if all pixels are finished -> write to converting_finished register  
+        if( ddr_write_count >= 260096 ) begin // PAY ATTENTION, SUBJECT TO CHANGE,Check if all pixels are finished -> write to converting_finished register  
             conversion_finished <= 1;
             ddr_write_count <= 0;
         end

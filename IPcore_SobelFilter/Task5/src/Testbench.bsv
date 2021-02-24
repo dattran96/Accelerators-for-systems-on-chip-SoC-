@@ -35,34 +35,50 @@ rule handleReadRequest;
     if(r.addr[5:0] == 0) begin // Check address 0
         $display("Response data  %x ", 64'h9C9428207C7464C8);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h9C9428207C7464C8, resp: OKAY});
+        //$display("Response data  %x ", 64'h0706050403020100);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h0706050403020100, resp: OKAY});
     end
     else if(r.addr[5:0] == 8) begin // Check address 4
         $display("Response data %x ", 64'h9D312921191109C9);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h9D312921191109C9, resp: OKAY});
+        //$display("Response data  %x ", 64'h640E0D0C0B0A0908);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h640E0D0C0B0A0908, resp: OKAY});
     end 
     else if(r.addr[5:0] == 16) begin // Check address 8
         $display("Response data %x ", 64'h9E328E221A120ACA); 
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h9E328E221A120ACA, resp: OKAY});
+        //$display("Response data  %x ", 64'h1716151413121110);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h1716151413121110, resp: OKAY});
     end
     else if(r.addr[5:0] == 24) begin // Check address 16
         $display("Response data %x ", 64'h9F332B871BBF0BCB);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h9F332B871BBF0BCB, resp: OKAY});
+        //$display("Response data  %x ", 64'h1F1E1D1C1B1A1918);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h1F1E1D1C1B1A1918, resp: OKAY});
     end
     else if(r.addr[5:0] == 32) begin 
         $display("Response data %x ", 64'hA0982C241C140CCC);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'hA0982C241C140CCC, resp: OKAY});
+        //$display("Response data  %x ", 64'h2726252423222120);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h2726252423222120, resp: OKAY});
     end
     if(r.addr[5:0] == 40) begin // Check address 0
         $display("Response data %x ", 64'hA1352D251D150DCD);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'hA1352D251D150DCD, resp: OKAY});
+        //$display("Response data  %x ", 64'h2F2E2D2C2B2A2928);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h2F2E2D2C2B2A2928, resp: OKAY});
     end
     else if(r.addr[5:0] == 48) begin // Check address 4
         $display("Response data %x ", 64'hA2362E26827A0ECE);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'hA2362E26827A0ECE, resp: OKAY});
+        //$display("Response data  %x ", 64'h3736353433323130);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h3736353433323130, resp: OKAY});
     end 
     else if(r.addr[5:0] == 56) begin // Check address 8
         $display("Response data %x ", 64'hA3372F271F1773CF);
         s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'hA3372F271F1773CF, resp: OKAY});
+        //$display("Response data  %x ", 64'h3F3E3D3C3B3A3938);
+        //s_rd.response.put(AXI4_Lite_Read_Rs_Pkg{ data: 64'h3F3E3D3C3B3A3938, resp: OKAY});
     end
 endrule
 
