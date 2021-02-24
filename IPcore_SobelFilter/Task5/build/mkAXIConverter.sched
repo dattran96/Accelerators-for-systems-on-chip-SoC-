@@ -1676,19 +1676,91 @@ Blocking rules: (none)
  
 Rule: readRequest
 Predicate: master_read_in.i_notFull &&
-	   (! (start == 64'd0)) && (conversion_finished == 64'd0) &&
-	   (! converting_flag) &&
-	   (state_64 == 64'd0)
+	   (! (start == 64'd0)) && (conversion_finished == 64'd0)
 Blocking rules: (none)
  
-Rule: convertRGB2Gray
-Predicate: master_read_out.i_notEmpty && buffer.i_notFull &&
-	   buffer.notFull && (state_64 == 64'd1)
+Rule: localDataBuffer
+Predicate: master_read_out.i_notEmpty && buffer.i_notFull
 Blocking rules: (none)
+ 
+Rule: localDataBuffer_8bit
+Predicate: buffer.i_notEmpty && buffer_8bit.i_notFull &&
+	   (! buffer_8bit.notEmpty)
+Blocking rules: (none)
+ 
+Rule: rowBufferInital
+Predicate: rowBuffer_1.i_notFull && rowBuffer_2.i_notFull &&
+	   rowBuffer_inital && rowBuffer_1.notFull && rowBuffer_2.notFull
+Blocking rules: (none)
+ 
+Rule: rowBufferInital_finish
+Predicate: (! rowBuffer_1.notFull) && rowBuffer_inital
+Blocking rules: (none)
+ 
+Rule: initial_testslideWindow
+Predicate: testslideWindow.i_notFull && testslideWindow_control
+Blocking rules: (none)
+ 
+Rule: initial_testslideWindow_finish
+Predicate: (! testslideWindow.notFull) && testslideWindow_control
+Blocking rules: (none)
+ 
+Rule: windowBuffer_inital
+Predicate: rowBuffer_1.i_notEmpty &&
+	   window_Initial && (! rowBuffer_inital) && (state_temp == 8'd0) &&
+	   (! testslideWindow_control)
+Blocking rules: (none)
+ 
+Rule: windowBuffer_inital_2
+Predicate: rowBuffer_1.i_notFull && rowBuffer_2.i_notEmpty &&
+	   (state_temp == 8'd1)
+Blocking rules: rowBufferInital
+ 
+Rule: windowBuffer_inital_3
+Predicate: rowBuffer_2.i_notFull && buffer_8bit.i_notEmpty &&
+	   (state_temp == 8'd2)
+Blocking rules: rowBufferInital
+ 
+Rule: windowBuffer_inital_end
+Predicate: window_Initial && (! rowBuffer_inital) && (state_temp == 8'd3) &&
+	   (! windowBuffer_once_inital)
+Blocking rules: (none)
+ 
+Rule: windowBuffer_slide
+Predicate: slide && (state_temp == 8'd3)
+Blocking rules: windowBuffer_inital_end
+ 
+Rule: sobelOperator
+Predicate: sobelConvert && (sobelState == 8'd0)
+Blocking rules: (none)
+ 
+Rule: absSum1
+Predicate: sobelConvert && (sobelState == 8'd1)
+Blocking rules: (none)
+ 
+Rule: sumUp
+Predicate: sobelConvert && (sobelState == 8'd2)
+Blocking rules: (none)
+ 
+Rule: limitMagnitude
+Predicate: sobelConvert && (sobelState == 8'd3)
+Blocking rules: (none)
+ 
+Rule: thresholdPixel
+Predicate: sobelConvert && (sobelState == 8'd4)
+Blocking rules: (none)
+ 
+Rule: writePixel
+Predicate: sobelConvert && (sobelState == 8'd5)
+Blocking rules: (none)
+ 
+Rule: enq_64
+Predicate: buffer_out.i_notFull && sobelConvert && (sobelState == 8'd6)
+Blocking rules: windowBuffer_slide
  
 Rule: writeRequest
-Predicate: master_write_in.i_notFull && buffer.i_notEmpty &&
-	   buffer.notEmpty && (state_64 == 64'd2)
+Predicate: master_write_in.i_notFull && buffer_out.i_notEmpty &&
+	   (! (conversion_finished == 64'd1))
 Blocking rules: (none)
  
 Rule: requestResponse
@@ -1722,13 +1794,29 @@ Logical execution order: slave_read_fab_arready,
 			 master_write_fab_pbvalid,
 			 master_write_fab_bready,
 			 master_write_fab_pbresp,
+			 localDataBuffer_8bit,
+			 rowBufferInital,
+			 rowBufferInital_finish,
+			 initial_testslideWindow,
+			 initial_testslideWindow_finish,
+			 sobelOperator,
+			 windowBuffer_inital,
+			 windowBuffer_inital_2,
+			 absSum1,
+			 sumUp,
+			 limitMagnitude,
+			 thresholdPixel,
+			 writePixel,
+			 windowBuffer_slide,
+			 enq_64,
+			 windowBuffer_inital_3,
+			 windowBuffer_inital_end,
 			 slave_read_addrInWrite,
 			 slave_read_putOutData,
 			 slave_read_fab_rdata,
 			 slave_read_fab_rresp,
 			 slave_read_deqOut,
 			 handleReadRequest,
-			 writeRequest,
 			 slave_read_isRst_isResetAssertedUpdate,
 			 slave_write_addrInWrite,
 			 slave_write_dataInWrite,
@@ -1742,9 +1830,10 @@ Logical execution order: slave_read_fab_arready,
 			 master_read_fab_arprot,
 			 master_read_deqIn,
 			 readRequest,
+			 writeRequest,
 			 handleWriteRequest,
 			 master_read_enqOut,
-			 convertRGB2Gray,
+			 localDataBuffer,
 			 master_read_isRst_isResetAssertedUpdate,
 			 master_write_splitAddrData,
 			 master_write_fab_awvalid,

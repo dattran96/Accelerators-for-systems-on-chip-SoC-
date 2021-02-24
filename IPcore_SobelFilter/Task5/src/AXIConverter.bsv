@@ -123,6 +123,7 @@ module mkAXIConverter(AXIConverter);
         axi4_lite_read(master_read, address_image_1 + ddr_read_count);
         if( ddr_read_count == 56) begin // Check if all pixels are finished -> write to converting_finished register  
             ddr_read_count <= 0;
+            start <= 0;
         end
         else begin
             ddr_read_count <= ddr_read_count + 8;
@@ -161,8 +162,8 @@ module mkAXIConverter(AXIConverter);
    Reg#(Bit#(8)) reg31 <- mkReg(0);
    Reg#(Bit#(8)) reg32 <- mkReg(0);
    Reg#(Bit#(8)) reg33 <- mkReg(0);
-   FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(2);  //PAY ATTENTION, SUBJECT to CHANGE
-   FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(2);  //PAY ATTENTION, SUBJECT to CHANGE	
+   FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(5);  //PAY ATTENTION, SUBJECT to CHANGE
+   FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(5);  //PAY ATTENTION, SUBJECT to CHANGE	
    Reg#(Bool) windowReady <- mkReg(False); //issue to other rules that data of 9 pixel are ready
    Reg#(Bool) windowSlide <- mkReg(False); // other rules set this bit to issue they need new window data
    Reg#(Bool) window_Initial <- mkReg(False);
@@ -171,12 +172,12 @@ module mkAXIConverter(AXIConverter);
    Reg#(Bool) sobelConvert <- mkReg(False);
    
    Reg#(Bit#(32)) kernel_size <- mkReg(3); //PAY ATTENTION, SUBJECT to CHANGE
-   Reg#(Bit#(32)) image_length <- mkReg(5); //PAY ATTENTION, SUBJECT to CHANGE
+   Reg#(Bit#(32)) image_length <- mkReg(8); //PAY ATTENTION, SUBJECT to CHANGE
    /* Initialize row buffer at the first time, since slide window operate correctly only if row buffer 1 and row buffer 2 are already filled */
    rule rowBufferInital if(rowBuffer_inital == True && rowBuffer_1.notFull() == True && rowBuffer_2.notFull() == True );
    	rowBuffer_1.enq(0); //Fill waste values until full
 	rowBuffer_2.enq(0); //Fill waste values until full
-	$display("Test Here 1");	
+	//$display("Test Here 1");	
    endrule
    
 
@@ -185,24 +186,24 @@ module mkAXIConverter(AXIConverter);
    rule rowBufferInital_finish if(rowBuffer_1.notFull() == False && rowBuffer_inital == True);
    	rowBuffer_inital <= False;
 	window_Initial <= True;
-	$display("Test Here 2");
+	//$display("Test Here 2");
    endrule
    
    
    
     /* Simulate an Image*/
-    FIFOF#(Bit#(8)) testslideWindow <- mkSizedFIFOF(25); //PAY ATTENTION, SUBJECT to CHANGE
+    FIFOF#(Bit#(8)) testslideWindow <- mkSizedFIFOF(64); //PAY ATTENTION, SUBJECT to CHANGE
     Reg#(Bit#(8)) testslideWindow_count <- mkReg(0); 
     Reg#(Bool) testslideWindow_control <- mkReg(True);    
     rule initial_testslideWindow if(testslideWindow_control == True); //test image 5 x 5 first
     	testslideWindow.enq(testslideWindow_count);
     	testslideWindow_count <= testslideWindow_count + 1;  
-    	$display("Test Here 3"); 
+    	//$display("Test Here 3"); 
     endrule
     
     rule initial_testslideWindow_finish if( testslideWindow.notFull() == False && testslideWindow_control == True) ; //test image 5 x 5 first
  	testslideWindow_control <= False;
-    	$display("Test Here 4"); 
+    	//$display("Test Here 4"); 
     endrule
 /*	
    rule print_fifo(testslideWindow_control == False);
@@ -220,7 +221,7 @@ module mkAXIConverter(AXIConverter);
     Reg#(Bit#(32)) slide_position <- mkReg(0); //Count from 0
     Reg#(Bit#(8)) state_temp <- mkReg(0);
    rule windowBuffer_inital if(window_Initial == True && rowBuffer_inital == False && state_temp==0 && testslideWindow_control == False);
-  	$display("Test Here 5");
+  	//$display("Test Here 5");
    	reg11 <= reg12; 
 	reg12 <= reg13;
 	reg13 <= rowBuffer_1.first; rowBuffer_1.deq; 
@@ -228,7 +229,7 @@ module mkAXIConverter(AXIConverter);
    endrule
    
    rule windowBuffer_inital_2(state_temp ==1);
-   	rowBuffer_1.enq(reg21); $display("Test Here 6");
+   	rowBuffer_1.enq(reg21); //$display("Test Here 6");
 	reg21 <= reg22;
 	reg22 <= reg23;
 	reg23 <= rowBuffer_2.first(); rowBuffer_2.deq;
@@ -236,11 +237,11 @@ module mkAXIConverter(AXIConverter);
    endrule
 
    rule windowBuffer_inital_3(state_temp ==2);
-   	$display("Test Here 7");	
+   	//$display("Test Here 7");	
 	rowBuffer_2.enq(reg31);
 	reg31 <= reg32;
 	reg32 <= reg33;
-	reg33 <= testslideWindow.first(); testslideWindow.deq; //PAY ATTENTION, REPLACE "testslideWindow" WITH "buffer_8bit" to get data via AXI
+	reg33 <= buffer_8bit.first(); buffer_8bit.deq; //PAY ATTENTION, REPLACE "testslideWindow" WITH "buffer_8bit" to get data via AXI
 	state_temp <=3;
 	bufferRowCount <= bufferRowCount + 1;
 	slide_finish <= True;
@@ -258,7 +259,7 @@ module mkAXIConverter(AXIConverter);
 		windowBuffer_once_inital <= True;
 		sobelConvert <= True; //command
 		slide_finish <= False; //Reset slide status
-		$display("Test Here 8");
+		//$display("Test Here 8");
 	end
 	else
 		state_temp <= 0; 
@@ -268,21 +269,21 @@ module mkAXIConverter(AXIConverter);
   /*Control state, this state checks if the sliding window should continue sliding and how many units it will slide*/ 
   rule windowBuffer_slide if (slide == True && state_temp ==3);	
 	if(bufferRowCount >= image_length*image_length+1) begin
-		$display("Test slide position 1  %d",slide_position );
+		//$display("Test slide position 1  %d",slide_position );
 		window_Initial <= False;
 		sobelConvert <= False;
 		slide <= False;
 	end
 	
 	else if( slide_finish == False ||  slide_position == 1 ||  slide_position == 2) begin //If window is not slide, or if it's already slide but not enough( at positon 1 and 2), then do slide
-		$display("Test slide position 2  %d",slide_position );
+		//$display("Test slide position 2  %d",slide_position );
 		state_temp <= 0;
 		window_Initial <= True;
 		sobelConvert <= False;
 	end
 	
 	else begin // If windown is aldread slide, then come to Sobel Filter 
-		$display("Test slide position 3 %d",slide_position );
+		//$display("Test slide position 3 %d",slide_position );
 		sobelConvert <= True;
 		slide <= False;
 		slide_finish <= False; //Reset slide status
@@ -335,17 +336,17 @@ module mkAXIConverter(AXIConverter);
 	Reg#(Bit#(8)) sobelState <- mkReg(0);
    rule sobelOperator(sobelConvert == True && sobelState == 0);
 	/*TODO, Convert here*/
-	$display("%d Hello World!", reg11);
-	$display("%d Hello World!", reg12);
-	$display("%d Hello World!", reg13);
-	$display("%d Hello World!", reg21);
-	$display("%d Hello World!", reg22);
-	$display("%d Hello World!", reg23);
-	$display("%d Hello World!", reg31);
-	$display("%d Hello World!", reg32);
-	$display("%d Hello World!", reg33);
+	//$display("%d Hello World!", reg11);
+	//$display("%d Hello World!", reg12);
+	//$display("%d Hello World!", reg13);
+	//$display("%d Hello World!", reg21);
+	//$display("%d Hello World!", reg22);
+	//$display("%d Hello World!", reg23);
+	//$display("%d Hello World!", reg31);
+	//$display("%d Hello World!", reg32);
+	//$display("%d Hello World!", reg33);
 	
-	$display("Start Sobel Calculation");
+	//$display("Start Sobel Calculation");
 	sum_1 <= signExtend(gx_reg11*unpack(reg11)) + signExtend(gx_reg12*unpack(reg12)) + signExtend(gx_reg13*unpack(reg13))+ signExtend(gx_reg21*unpack(reg21))+ signExtend(gx_reg22*unpack(reg22))+ signExtend(gx_reg23*unpack(reg23))+ signExtend(gx_reg31*unpack(reg31))+ signExtend(gx_reg32*unpack(reg32))+ signExtend(gx_reg33*unpack(reg33));
 	sum_2 <= signExtend(gy_reg11*unpack(reg11)) + signExtend(gy_reg12*unpack(reg12)) + signExtend(gy_reg13*unpack(reg13))+ signExtend(gy_reg21*unpack(reg21))+ signExtend(gy_reg22*unpack(reg22))+ signExtend(gy_reg23*unpack(reg23))+ signExtend(gy_reg31*unpack(reg31))+ signExtend(gy_reg32*unpack(reg32))+ signExtend(gy_reg33*unpack(reg33));
 	sobelState <= sobelState + 1;
@@ -390,11 +391,11 @@ module mkAXIConverter(AXIConverter);
    	sobelState <= sobelState + 1;
    endrule
    
-   Reg#(Int#(16)) threshold <- mkReg(2);
+   Reg#(Int#(16)) threshold <- mkReg(200);
    Reg#(Bit#(8)) outPixel <- mkReg(0);		
    rule thresholdPixel(sobelConvert == True && sobelState == 4);
    	if (sum_12 <= threshold) begin
-   		outPixel <= 0;
+   		outPixel <=  0; 
    	end
    	else begin
    		outPixel <= pack(sum_12)[7:0];
@@ -402,37 +403,70 @@ module mkAXIConverter(AXIConverter);
    	sobelState <= sobelState + 1;
    	
    endrule
-   
-   Reg#(int) test1 <- mkReg(-1);	
-   Reg#(int) test2 <- mkReg(2);	
-   Reg#(Int#(8)) test3 <- mkReg(-2);
-   Reg#(Bit#(8)) test4 <- mkReg(3);
+ 
+   FIFOF#(Bit#(64)) buffer_out <- mkSizedFIFOF(100);
+   Reg#(Bit#(64)) out_hold <- mkReg(0);
+   Reg#(Bit#(8)) out_count <- mkReg(0);
+   Reg#(Bit#(32)) tempcount <- mkReg(0);
+   Reg#(Bool) endOfbuffer <- mkReg(False);    //status register	
    rule writePixel(sobelConvert == True && sobelState == 5);
-   	/*Need another window*/
-	sobelConvert <= False;
-	sobelState <= 0;
-	if(bufferRowCount < image_length*image_length)
-		slide <= True;
-	$display("Finish Filter, outPixel is %d",outPixel);
+   	
+	case(out_count)		
+	0: begin out_hold[7:0] <= outPixel;out_count <= out_count + 1;sobelState <= 6;  end
+	1: begin out_hold[15:8] <= outPixel;out_count <= out_count + 1;sobelState <= 6;   end
+	2: begin out_hold[23:16] <= outPixel; out_count <= out_count + 1;sobelState <= 6;   end
+	3: begin out_hold[31:24] <= outPixel;out_count <= out_count + 1;sobelState <= 6;   end
+	4: begin out_hold[39:32] <= outPixel;out_count <= out_count + 1;sobelState <= 6;   end
+	5: begin out_hold[47:40] <= outPixel;out_count <= out_count + 1;sobelState <= 6;   end
+	6: begin out_hold[55:48] <= outPixel;out_count <= out_count + 1;sobelState <= 6;   end
+	7: begin out_hold[63:56] <= outPixel;out_count <= out_count + 1;sobelState <= 6;  end
+	endcase
+	
+	$display("Finish Filter, pixel is %d",outPixel); 
+	tempcount <= tempcount +1;
    endrule
    
+   rule enq_64(sobelConvert == True && sobelState == 6);
    
+	/*Need another window*/
+	sobelConvert <= False;
+	sobelState <= 0; //Slide window again
+	if(bufferRowCount < image_length*image_length ) begin
+		slide <= True;
+	end	
+	
+	
+		
+		
+	if(out_count == 8)  begin 
+   		buffer_out.enq(out_hold);
+   		out_count <= 0;
+   	end
+   	
+   	else if (bufferRowCount == image_length*image_length) begin
+		Bit#(64) tmp = {out_hold[31:0],32'd0};
+   		buffer_out.enq(tmp);
+	end
+	//$display("Pixel number %d",bufferRowCount); 
+	
+   endrule
+	
 
+	
     // Here could use CReg
-    rule writeRequest if( buffer.notEmpty() && state_64 == 2);
-        axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(pack(buffer.first())));
+    
+    rule writeRequest(conversion_finished != 1); //if( buffer_out.notEmpty());
+        axi4_lite_write(master_write, address_image_2 + ddr_write_count, zExtend(buffer_out.first()));
         //axi4_lite_write(master_write, address_image_2 + ddr_write_count, 64'd11);
-        buffer.deq();
-        if( ddr_write_count == 786424 ) begin // Check if all pixels are finished -> write to converting_finished register  
+        buffer_out.deq();
+        if( ddr_write_count >= 28 ) begin // PAY ATTENTION, SUBJECT TO CHANGE,Check if all pixels are finished -> write to converting_finished register  
             conversion_finished <= 1;
-            start <= 0;
             ddr_write_count <= 0;
         end
         else begin
             ddr_write_count <= ddr_write_count + 8;
         end 
-        converting_flag <= False;
-	state_64 <= 0 ;
+        //converting_flag <= False;
     endrule
 
     rule requestResponse;

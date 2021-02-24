@@ -1,0 +1,228 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Sat Feb 13 20:09:05 2021
+# Process ID: 910811
+# Current directory: /home/stud/nt92homu/Desktop/Task5
+# Command line: vivado
+# Log file: /home/stud/nt92homu/Desktop/Task5/vivado.log
+# Journal file: /home/stud/nt92homu/Desktop/Task5/vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/stud/nt92homu/Desktop/Task5/build/ip/AXIConverter'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/cad/xilinx/vitis/Vivado/2020.1/data/ip'.
+open_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:12 . Memory (MB): peak = 7309.789 ; gain = 25.250 ; free physical = 440 ; free virtual = 22962
+update_compile_order -fileset sources_1
+open_bd_design {/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd}
+Successfully read diagram <design_1> from BD file </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd>
+open_bd_design: Time (s): cpu = 00:00:07 ; elapsed = 00:00:06 . Memory (MB): peak = 7376.520 ; gain = 24.707 ; free physical = 318 ; free virtual = 22836
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:zynq_ultra_ps_e:3.3 zynq_ultra_ps_e_0
+CRITICAL WARNING: [PSU-1]  Actual device frequency is : 479.995209. Minimum actual device frequency supported for DDR for current part is 500.000000. 
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:zynq_ultra_ps_e -config {apply_board_preset "1" }  [get_bd_cells zynq_ultra_ps_e_0]
+INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other peripheral clocks. Their outputs may get impacted if any driver changes DP_AUDIO PLL source to support runtime audio change 
+INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other peripheral clocks. Their outputs may get impacted if any driver changes DP_AUDIO PLL source to support runtime audio change 
+WARNING: [IP_Flow 19-474] Invalid Parameter 'Component_Name'
+INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other peripheral clocks. Their outputs may get impacted if any driver changes DP_AUDIO PLL source to support runtime audio change 
+set_property -dict [list CONFIG.PSU__USE__S_AXI_GP2 {1}] [get_bd_cells zynq_ultra_ps_e_0]
+INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other peripheral clocks. Their outputs may get impacted if any driver changes DP_AUDIO PLL source to support runtime audio change 
+startgroup
+create_bd_cell -type ip -vlnv esa.informatik.tu-darmstadt.de:user:AXIConverter:1.0 AXIConverter_0
+endgroup
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/zynq_ultra_ps_e_0/M_AXI_HPM0_FPD} Slave {/AXIConverter_0/S00_AXI} ddr_seg {Auto} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins AXIConverter_0/S00_AXI]
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+WARNING: [BD 41-1627] Requested range of <16E> for slave segments </AXIConverter_0/S00_AXI/reg0> exceeds the range of the largest address space in assignment request </zynq_ultra_ps_e_0/Data>. Shrinking the initial requested range to <224G>
+Slave segment '/AXIConverter_0/S00_AXI/reg0' is being assigned into address space '/zynq_ultra_ps_e_0/Data' at <0x20_0000_0000 [ 128G ]>.
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/AXIConverter_0/M00_AXI} Slave {/zynq_ultra_ps_e_0/S_AXI_HP0_FPD} ddr_seg {Auto} intc_ip {New AXI SmartConnect} master_apm {0}}  [get_bd_intf_pins zynq_ultra_ps_e_0/S_AXI_HP0_FPD]
+Slave segment '/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_LOW' is being assigned into address space '/AXIConverter_0/M00_AXI' at <0x0000_0000 [ 2G ]>.
+Slave segment '/zynq_ultra_ps_e_0/SAXIGP2/HP0_LPS_OCM' is being assigned into address space '/AXIConverter_0/M00_AXI' at <0xFF00_0000 [ 16M ]>.
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {/zynq_ultra_ps_e_0/pl_clk0 (100 MHz)} Clk_xbar {/zynq_ultra_ps_e_0/pl_clk0 (100 MHz)} Master {/zynq_ultra_ps_e_0/M_AXI_HPM1_FPD} Slave {/AXIConverter_0/S00_AXI} ddr_seg {Auto} intc_ip {/ps8_0_axi_periph} master_apm {0}}  [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM1_FPD]
+WARNING: [xilinx.com:ip:zynq_ultra_ps_e:3.3-1] /zynq_ultra_ps_e_0</axi_smc/M00_AXI> of </axi_smc> is connected to </zynq_ultra_ps_e_0>. To avoid loops, any interface from </zynq_ultra_ps_e_0> should not be connected to </zynq_ultra_ps_e_0> using </axi_smc>
+regenerate_bd_layout
+set_property HDL_ATTRIBUTE.DEBUG true [get_bd_intf_nets {ps8_0_axi_periph_M00_AXI AXIConverter_0_M00_AXI}]
+true
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:debug -dict [list \
+                                                          [get_bd_intf_nets AXIConverter_0_M00_AXI] {AXI_R_ADDRESS "Data and Trigger" AXI_R_DATA "Data and Trigger" AXI_W_ADDRESS "Data and Trigger" AXI_W_DATA "Data and Trigger" AXI_W_RESPONSE "Data and Trigger" CLK_SRC "/zynq_ultra_ps_e_0/pl_clk0" SYSTEM_ILA "Auto" APC_EN "0" } \
+                                                          [get_bd_intf_nets ps8_0_axi_periph_M00_AXI] {AXI_R_ADDRESS "Data and Trigger" AXI_R_DATA "Data and Trigger" AXI_W_ADDRESS "Data and Trigger" AXI_W_DATA "Data and Trigger" AXI_W_RESPONSE "Data and Trigger" CLK_SRC "/zynq_ultra_ps_e_0/pl_clk0" SYSTEM_ILA "Auto" APC_EN "0" } \
+                                                         ]
+ipx::get_ipfiles: Time (s): cpu = 00:00:01 ; elapsed = 00:00:06 . Memory (MB): peak = 7468.184 ; gain = 0.000 ; free physical = 657 ; free virtual = 22672
+Debug Automation : Instantiating new System ILA block '/system_ila_0' with mode INTERFACE, 2 slot interface pins and 0 probe pins. Also setting parameters on this block, corresponding to newly enabled interface pins and probe pins as specified via Debug Automation.
+Debug Automation : Connecting source clock pin /zynq_ultra_ps_e_0/pl_clk0 to the following sink clock pins :
+/system_ila_0/clk
+Debug Automation : Connecting source reset pin /rst_ps8_0_100M/peripheral_aresetn to the following sink reset pins :
+/system_ila_0/resetn
+Debug Automation : Connecting interface connection /AXIConverter_0_M00_AXI, to System ILA slot interface pin /system_ila_0/SLOT_0_AXI for debug.
+Debug Automation : Connecting interface connection /ps8_0_axi_periph_M00_AXI, to System ILA slot interface pin /system_ila_0/SLOT_1_AXI for debug.
+apply_bd_automation: Time (s): cpu = 00:00:03 ; elapsed = 00:00:10 . Memory (MB): peak = 7468.184 ; gain = 0.000 ; free physical = 653 ; free virtual = 22669
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:debug_bridge:3.0 debug_bridge_0
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has completed 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has started running 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update content has started running 
+create_bd_cell: Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 8192.434 ; gain = 708.242 ; free physical = 509 ; free virtual = 22192
+create_bd_cell: Time (s): cpu = 00:00:10 ; elapsed = 00:00:19 . Memory (MB): peak = 8192.434 ; gain = 708.242 ; free physical = 508 ; free virtual = 22190
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/zynq_ultra_ps_e_0/pl_clk0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins debug_bridge_0/clk]
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has completed 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has started running 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has completed 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has started running 
+startgroup
+set_property -dict [list CONFIG.C_DEBUG_MODE {2} CONFIG.C_NUM_BS_MASTER {1} CONFIG.C_BSCAN_MUX {2} CONFIG.C_XVC_HW_ID {0x0002}] [get_bd_cells debug_bridge_0]
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has completed 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update boundary has started running 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_0_0:  Update content has started running 
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/zynq_ultra_ps_e_0/pl_clk0 (100 MHz)} Clk_slave {Auto} Clk_xbar {/zynq_ultra_ps_e_0/pl_clk0 (100 MHz)} Master {/zynq_ultra_ps_e_0/M_AXI_HPM0_FPD} Slave {/debug_bridge_0/S_AXI} ddr_seg {Auto} intc_ip {/ps8_0_axi_periph} master_apm {0}}  [get_bd_intf_pins debug_bridge_0/S_AXI]
+Slave segment '/debug_bridge_0/S_AXI/Reg0' is being assigned into address space '/zynq_ultra_ps_e_0/Data' at <0xA000_0000 [ 64K ]>.
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:debug_bridge:3.0 debug_bridge_1
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_1_0:  Update boundary has completed 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_1_0:  Update boundary has started running 
+INFO: [xilinx.com:ip:debug_bridge:3.0-0] design_1_debug_bridge_1_0:  Update content has started running 
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/zynq_ultra_ps_e_0/pl_clk0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins debug_bridge_1/clk]
+connect_bd_intf_net [get_bd_intf_pins debug_bridge_0/m0_bscan] [get_bd_intf_pins debug_bridge_1/S_BSCAN]
+connect_bd_net [get_bd_pins debug_bridge_0/s_axi_aresetn] [get_bd_pins rst_ps8_0_100M/peripheral_aresetn]
+regenerate_bd_layout
+validate_bd_design
+WARNING: [BD 41-1781] Updates have been made to one or more nets/interface connections marked for debug.
+Debug nets, which are already connected to any ILA IP core in the block-design, will be automatically available for debug in Hardware Manager.
+For unconnected Debug nets, please open synthesized design and use 'Set Up Debug' wizard to insert, modify or delete Debug Cores. 
+WARNING: [BD 41-2121] Port s_axi_aclk associated reset port s_axi_lite_resetn does not exist
+INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other peripheral clocks. Their outputs may get impacted if any driver changes DP_AUDIO PLL source to support runtime audio change 
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+validate_bd_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:15 . Memory (MB): peak = 8226.449 ; gain = 0.000 ; free physical = 183 ; free virtual = 21405
+make_wrapper -files [get_files /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd] -top
+INFO: [BD 41-1662] The design 'design_1.bd' is already validated. Therefore parameter propagation will not be re-run.
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+make_wrapper: Time (s): cpu = 00:00:06 ; elapsed = 00:00:19 . Memory (MB): peak = 8248.426 ; gain = 5.969 ; free physical = 166 ; free virtual = 21300
+add_files -norecurse /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+startgroup
+set_property -dict [list CONFIG.C_BRAM_CNT {12} CONFIG.C_EN_STRG_QUAL {1} CONFIG.C_ADV_TRIGGER {true} CONFIG.C_PROBE0_MU_CNT {2} CONFIG.ALL_PROBE_SAME_MU_CNT {2}] [get_bd_cells system_ila_0]
+WARNING: [IP_Flow 19-3374] An attempt to modify the value of disabled parameter 'C_BRAM_CNT' from '17.5' to '12' has been ignored for IP 'system_ila_0'
+endgroup
+validate_bd_design
+WARNING: [BD 41-1781] Updates have been made to one or more nets/interface connections marked for debug.
+Debug nets, which are already connected to any ILA IP core in the block-design, will be automatically available for debug in Hardware Manager.
+For unconnected Debug nets, please open synthesized design and use 'Set Up Debug' wizard to insert, modify or delete Debug Cores. 
+WARNING: [BD 41-2121] Port s_axi_aclk associated reset port s_axi_lite_resetn does not exist
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+validate_bd_design: Time (s): cpu = 00:00:16 ; elapsed = 00:00:13 . Memory (MB): peak = 8390.359 ; gain = 0.000 ; free physical = 787 ; free virtual = 21844
+save_bd_design
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+INFO: [BD 41-1662] The design 'design_1.bd' is already validated. Therefore parameter propagation will not be re-run.
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [xilinx.com:ip:zynq_ultra_ps_e:3.3-0] design_1_zynq_ultra_ps_e_0_0: 
+Changes in your design (including the PCW configuration settings) are not automatically exported from Vivado to Xilinx's SDK, Petalinux or Yocto.
+This is by design to avoid disrupting existing embedded development efforts. To have any changes of your design taking effect in the embedded software flow please export your
+design by going through Vivado's main menu, click on File, then Export finally select Export Hardware, please ensure you click on the Include BitStream option.
+The auto-generated HDF file is all you need to import in Xilinx's SDK, Petalinux or Yocto for your changes to be reflected in the Embedded Software Flow.
+For more information, please consult PG201, section: Exporting PCW Settings to Embedded Software Flows
+INFO: [PSU-0] Address Range of DDR (0x7ff00000 to 0x7fffffff) is reserved by PMU for internal purpose.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI_HPM0_FPD'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI_HPM1_FPD'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI_HP0_FPD'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block zynq_ultra_ps_e_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block AXIConverter_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/xbar .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_ps8_0_100M .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/hw_handoff/design_1_axi_smc_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/hw_handoff/design_1_axi_smc_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/synth/design_1_axi_smc_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_smc .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/synth/design_1_system_ila_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block system_ila_0 .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/hw_handoff/design_1_debug_bridge_0_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/hw_handoff/design_1_debug_bridge_0_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/synth/design_1_debug_bridge_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block debug_bridge_0 .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/hw_handoff/design_1_debug_bridge_1_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/hw_handoff/design_1_debug_bridge_1_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/synth/design_1_debug_bridge_1_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block debug_bridge_1 .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_1/design_1_auto_ds_1_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s00_couplers/auto_ds .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s00_couplers/auto_pc .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_2/design_1_auto_ds_2_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s01_couplers/auto_ds .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_1/design_1_auto_pc_1_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s01_couplers/auto_pc .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_0/design_1_auto_ds_0_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/m01_couplers/auto_ds .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hw_handoff/design_1_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.hwdef
+[Sat Feb 13 20:20:27 2021] Launched design_1_rst_ps8_0_100M_0_synth_1, bd_c443_bs_switch_1_0_synth_1, bd_c443_bsip_0_synth_1, design_1_debug_bridge_0_0_synth_1, bd_c443_axi_jtag_0_synth_1, design_1_system_ila_0_0_synth_1, bd_c443_bs_switch_2_synth_1, design_1_debug_bridge_1_0_synth_1, bd_0412_lut_buffer_0_synth_1, bd_c443_bs_mux_0_synth_1, bd_0412_xsdbm_0_synth_1, design_1_xbar_0_synth_1, design_1_AXIConverter_0_0_synth_1, design_1_zynq_ultra_ps_e_0_0_synth_1, design_1_auto_ds_0_synth_1, design_1_auto_pc_1_synth_1, design_1_auto_ds_2_synth_1, design_1_auto_pc_0_synth_1, design_1_axi_smc_0_synth_1, design_1_auto_ds_1_synth_1, synth_1...
+Run output will be captured here:
+design_1_rst_ps8_0_100M_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_rst_ps8_0_100M_0_synth_1/runme.log
+bd_c443_bs_switch_1_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_c443_bs_switch_1_0_synth_1/runme.log
+bd_c443_bsip_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_c443_bsip_0_synth_1/runme.log
+design_1_debug_bridge_0_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_debug_bridge_0_0_synth_1/runme.log
+bd_c443_axi_jtag_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_c443_axi_jtag_0_synth_1/runme.log
+design_1_system_ila_0_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_system_ila_0_0_synth_1/runme.log
+bd_c443_bs_switch_2_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_c443_bs_switch_2_synth_1/runme.log
+design_1_debug_bridge_1_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_debug_bridge_1_0_synth_1/runme.log
+bd_0412_lut_buffer_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_0412_lut_buffer_0_synth_1/runme.log
+bd_c443_bs_mux_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_c443_bs_mux_0_synth_1/runme.log
+bd_0412_xsdbm_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/bd_0412_xsdbm_0_synth_1/runme.log
+design_1_xbar_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_xbar_0_synth_1/runme.log
+design_1_AXIConverter_0_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_AXIConverter_0_0_synth_1/runme.log
+design_1_zynq_ultra_ps_e_0_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_zynq_ultra_ps_e_0_0_synth_1/runme.log
+design_1_auto_ds_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_auto_ds_0_synth_1/runme.log
+design_1_auto_pc_1_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_auto_pc_1_synth_1/runme.log
+design_1_auto_ds_2_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_auto_ds_2_synth_1/runme.log
+design_1_auto_pc_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_auto_pc_0_synth_1/runme.log
+design_1_axi_smc_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_axi_smc_0_synth_1/runme.log
+design_1_auto_ds_1_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_auto_ds_1_synth_1/runme.log
+synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/synth_1/runme.log
+[Sat Feb 13 20:20:29 2021] Launched impl_1...
+Run output will be captured here: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/impl_1/runme.log
+launch_runs: Time (s): cpu = 00:00:32 ; elapsed = 00:00:58 . Memory (MB): peak = 8683.277 ; gain = 199.086 ; free physical = 575 ; free virtual = 21739
+file copy -force /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/impl_1/design_1_wrapper.bit /home/stud/nt92homu/Desktop/Task5/Sobel_1.bit
+WARNING: [IP_Flow 19-4318] IP-XACT file does not exist: /home/stud/nt92homu/Desktop/Task5/build/ip/AXIConverter/component.xml. It will be created.
+WARNING: [IP_Flow 19-4318] IP-XACT file does not exist: /home/stud/nt92homu/Desktop/Task5/build/ip/AXIConverter/component.xml. It will be created.
+update_ip_catalog -rebuild -scan_changes
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/stud/nt92homu/Desktop/Task5/build/ip/AXIConverter'.
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.

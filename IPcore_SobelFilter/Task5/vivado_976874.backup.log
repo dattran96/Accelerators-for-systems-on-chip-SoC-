@@ -1,0 +1,197 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Sat Feb 13 21:31:09 2021
+# Process ID: 976874
+# Current directory: /home/stud/nt92homu/Desktop/Task5
+# Command line: vivado
+# Log file: /home/stud/nt92homu/Desktop/Task5/vivado.log
+# Journal file: /home/stud/nt92homu/Desktop/Task5/vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/stud/nt92homu/Desktop/Task5/build/ip/AXIConverter'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/cad/xilinx/vitis/Vivado/2020.1/data/ip'.
+WARNING: [BD 41-1661] One or more IPs have been locked in the design 'design_1.bd'. Please run report_ip_status for more details and recommendations on how to fix this issue.
+List of locked IPs:
+design_1_AXIConverter_0_0
+
+open_project: Time (s): cpu = 00:00:22 ; elapsed = 00:00:19 . Memory (MB): peak = 7316.793 ; gain = 39.258 ; free physical = 4927 ; free virtual = 26839
+update_compile_order -fileset sources_1
+open_bd_design {/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd}
+Adding component instance block -- xilinx.com:ip:zynq_ultra_ps_e:3.3 - zynq_ultra_ps_e_0
+Adding component instance block -- esa.informatik.tu-darmstadt.de:user:AXIConverter:1.0 - AXIConverter_0
+Adding component instance block -- xilinx.com:ip:axi_interconnect:2.1 - ps8_0_axi_periph
+Adding component instance block -- xilinx.com:ip:axi_crossbar:2.1 - xbar
+Adding component instance block -- xilinx.com:ip:axi_dwidth_converter:2.1 - auto_ds
+Adding component instance block -- xilinx.com:ip:axi_protocol_converter:2.1 - auto_pc
+Adding component instance block -- xilinx.com:ip:axi_dwidth_converter:2.1 - auto_ds
+Adding component instance block -- xilinx.com:ip:axi_protocol_converter:2.1 - auto_pc
+Adding component instance block -- xilinx.com:ip:axi_dwidth_converter:2.1 - auto_ds
+Adding component instance block -- xilinx.com:ip:proc_sys_reset:5.0 - rst_ps8_0_100M
+Adding component instance block -- xilinx.com:ip:smartconnect:1.0 - axi_smc
+Adding component instance block -- xilinx.com:ip:system_ila:1.1 - system_ila_0
+Adding component instance block -- xilinx.com:ip:debug_bridge:3.0 - debug_bridge_0
+Adding component instance block -- xilinx.com:ip:debug_bridge:3.0 - debug_bridge_1
+Successfully read diagram <design_1> from BD file </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd>
+open_bd_design: Time (s): cpu = 00:00:09 ; elapsed = 00:00:15 . Memory (MB): peak = 7543.898 ; gain = 0.000 ; free physical = 4073 ; free virtual = 26143
+report_ip_status -name ip_status 
+upgrade_ip -vlnv esa.informatik.tu-darmstadt.de:user:AXIConverter:1.0 [get_ips  design_1_AXIConverter_0_0] -log ip_upgrade.log
+Upgrading '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd'
+INFO: [IP_Flow 19-1972] Upgraded design_1_AXIConverter_0_0 from AXIConverter 1.0 to AXIConverter 1.0
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+INFO: [Coretcl 2-1525] Wrote upgrade log to '/home/stud/nt92homu/Desktop/Task5_Vivado/ip_upgrade.log'.
+export_ip_user_files -of_objects [get_ips design_1_AXIConverter_0_0] -no_script -sync -force -quiet
+generate_target all [get_files  /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd]
+WARNING: [BD 41-1781] Updates have been made to one or more nets/interface connections marked for debug.
+Debug nets, which are already connected to any ILA IP core in the block-design, will be automatically available for debug in Hardware Manager.
+For unconnected Debug nets, please open synthesized design and use 'Set Up Debug' wizard to insert, modify or delete Debug Cores. 
+WARNING: [BD 41-2121] Port s_axi_aclk associated reset port s_axi_lite_resetn does not exist
+CRITICAL WARNING: [xilinx.com:ip:smartconnect:1.0-1] design_1_axi_smc_0: The device(s) attached to /S00_AXI do not share a common clock source with this smartconnect instance.   Re-customize this AXI SmartConnect instance to add a new clock pin and connect it to the same clock source of the IP attached to /S00_AXI to prevent futher clock DRC violations.
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd> 
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [BD 41-1029] Generation completed for the IP Integrator block AXIConverter_0 .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/hw_handoff/design_1_axi_smc_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/hw_handoff/design_1_axi_smc_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/synth/design_1_axi_smc_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_smc .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/synth/design_1_system_ila_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block system_ila_0 .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/hw_handoff/design_1_debug_bridge_0_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/hw_handoff/design_1_debug_bridge_0_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/synth/design_1_debug_bridge_0_0.hwdef
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/hw_handoff/design_1_debug_bridge_1_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/hw_handoff/design_1_debug_bridge_1_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/synth/design_1_debug_bridge_1_0.hwdef
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_1/design_1_auto_ds_1_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s00_couplers/auto_ds .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s00_couplers/auto_pc .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_2/design_1_auto_ds_2_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s01_couplers/auto_ds .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_1/design_1_auto_pc_1_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s01_couplers/auto_pc .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_0/design_1_auto_ds_0_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/m01_couplers/auto_ds .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hw_handoff/design_1_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:34 ; elapsed = 00:00:54 . Memory (MB): peak = 7558.605 ; gain = 12.879 ; free physical = 4286 ; free virtual = 26108
+catch { config_ip_cache -export [get_ips -all design_1_AXIConverter_0_0] }
+catch { config_ip_cache -export [get_ips -all design_1_axi_smc_0] }
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_axi_smc_0, cache-ID = 1565bc4bdeb63c2f; cache size = 47.103 MB.
+catch { [ delete_ip_run [get_ips -all design_1_axi_smc_0] ] }
+catch { config_ip_cache -export [get_ips -all design_1_system_ila_0_0] }
+catch { config_ip_cache -export [get_ips -all design_1_auto_ds_1] }
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_ds_1, cache-ID = 82181ed62a092f39; cache size = 47.103 MB.
+catch { config_ip_cache -export [get_ips -all design_1_auto_pc_0] }
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_pc_0, cache-ID = 6a505f181c6e6054; cache size = 47.103 MB.
+catch { config_ip_cache -export [get_ips -all design_1_auto_ds_2] }
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_ds_2, cache-ID = 82181ed62a092f39; cache size = 47.103 MB.
+catch { config_ip_cache -export [get_ips -all design_1_auto_pc_1] }
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_pc_1, cache-ID = 6a505f181c6e6054; cache size = 47.103 MB.
+catch { config_ip_cache -export [get_ips -all design_1_auto_ds_0] }
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_ds_0, cache-ID = d69df3215ce39546; cache size = 47.103 MB.
+export_ip_user_files -of_objects [get_files /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd]
+launch_runs design_1_system_ila_0_0_synth_1 design_1_AXIConverter_0_0_synth_1 -jobs 4
+[Sat Feb 13 21:34:11 2021] Launched design_1_system_ila_0_0_synth_1, design_1_AXIConverter_0_0_synth_1...
+Run output will be captured here:
+design_1_system_ila_0_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_system_ila_0_0_synth_1/runme.log
+design_1_AXIConverter_0_0_synth_1: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/design_1_AXIConverter_0_0_synth_1/runme.log
+export_simulation -of_objects [get_files /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.ip_user_files/sim_scripts -ip_user_files_dir /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.ip_user_files -ipstatic_source_dir /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.cache/compile_simlib/modelsim} {questa=/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.cache/compile_simlib/questa} {ies=/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.cache/compile_simlib/ies} {xcelium=/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.cache/compile_simlib/xcelium} {vcs=/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.cache/compile_simlib/vcs} {riviera=/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+validate_bd_design -force
+WARNING: [BD 41-1781] Updates have been made to one or more nets/interface connections marked for debug.
+Debug nets, which are already connected to any ILA IP core in the block-design, will be automatically available for debug in Hardware Manager.
+For unconnected Debug nets, please open synthesized design and use 'Set Up Debug' wizard to insert, modify or delete Debug Cores. 
+WARNING: [BD 41-2121] Port s_axi_aclk associated reset port s_axi_lite_resetn does not exist
+CRITICAL WARNING: [xilinx.com:ip:smartconnect:1.0-1] design_1_axi_smc_0: The device(s) attached to /S00_AXI do not share a common clock source with this smartconnect instance.   Re-customize this AXI SmartConnect instance to add a new clock pin and connect it to the same clock source of the IP attached to /S00_AXI to prevent futher clock DRC violations.
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s00_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM0_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /ps8_0_axi_periph/s01_couplers/auto_ds/S_AXI(0) and /zynq_ultra_ps_e_0/M_AXI_HPM1_FPD(16)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /zynq_ultra_ps_e_0/S_AXI_HP0_FPD(1) and /axi_smc/M00_AXI(0)
+validate_bd_design: Time (s): cpu = 00:00:18 ; elapsed = 00:00:24 . Memory (MB): peak = 7807.426 ; gain = 0.000 ; free physical = 4203 ; free virtual = 24540
+save_bd_design
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+reset_run synth_1
+reset_run design_1_system_ila_0_0_synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+INFO: [BD 41-1662] The design 'design_1.bd' is already validated. Therefore parameter propagation will not be re-run.
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/hw_handoff/design_1_axi_smc_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/hw_handoff/design_1_axi_smc_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_axi_smc_0/bd_0/synth/design_1_axi_smc_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_smc .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/synth/design_1_system_ila_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block system_ila_0 .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/hw_handoff/design_1_debug_bridge_0_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/hw_handoff/design_1_debug_bridge_0_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_0_0/bd_0/synth/design_1_debug_bridge_0_0.hwdef
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/hw_handoff/design_1_debug_bridge_1_0.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/hw_handoff/design_1_debug_bridge_1_0_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_debug_bridge_1_0/bd_0/synth/design_1_debug_bridge_1_0.hwdef
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_1/design_1_auto_ds_1_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s00_couplers/auto_ds .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s00_couplers/auto_pc .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_2/design_1_auto_ds_2_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s01_couplers/auto_ds .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_1/design_1_auto_pc_1_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/s01_couplers/auto_pc .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file '/home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/ip/design_1_auto_ds_0/design_1_auto_ds_0_ooc.xdc'
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S_AXI'. A default connection has been created.
+WARNING: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps8_0_axi_periph/m01_couplers/auto_ds .
+Exporting to file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Block Design Tcl file /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/hw_handoff/design_1_bd.tcl
+Generated Hardware Definition File /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.srcs/sources_1/bd/design_1/synth/design_1.hwdef
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_ds_0, cache-ID = d69df3215ce39546; cache size = 79.080 MB.
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_ds_1, cache-ID = 82181ed62a092f39; cache size = 79.080 MB.
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_ds_2, cache-ID = 82181ed62a092f39; cache size = 79.080 MB.
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_pc_0, cache-ID = 6a505f181c6e6054; cache size = 79.080 MB.
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_auto_pc_1, cache-ID = 6a505f181c6e6054; cache size = 79.080 MB.
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_axi_smc_0, cache-ID = 1565bc4bdeb63c2f; cache size = 79.080 MB.
+INFO: [IP_Flow 19-4993] Using cached IP synthesis design for IP design_1_system_ila_0_0, cache-ID = ef0bd8c8ef343b61; cache size = 79.080 MB.
+config_ip_cache: Time (s): cpu = 00:00:07 ; elapsed = 00:00:13 . Memory (MB): peak = 7921.258 ; gain = 0.000 ; free physical = 4209 ; free virtual = 24871
+[Sat Feb 13 21:40:32 2021] Launched synth_1...
+Run output will be captured here: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/synth_1/runme.log
+[Sat Feb 13 21:40:32 2021] Launched impl_1...
+Run output will be captured here: /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/impl_1/runme.log
+launch_runs: Time (s): cpu = 00:00:17 ; elapsed = 00:00:37 . Memory (MB): peak = 7921.258 ; gain = 0.000 ; free physical = 3999 ; free virtual = 24663
+file copy -force /home/stud/nt92homu/Desktop/Task5_Vivado/Task5_Vivado.runs/impl_1/design_1_wrapper.bit /home/stud/nt92homu/Desktop/Task5/Sobel_2.bit
+exit
+INFO: [Common 17-206] Exiting Vivado at Sat Feb 13 22:43:07 2021...
