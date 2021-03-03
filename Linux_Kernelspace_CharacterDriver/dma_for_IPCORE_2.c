@@ -71,7 +71,7 @@ static int my_open(struct inode*inode,struct file*file)
 	}
 	
 	printk(KERN_INFO"Address of Partition 1 in RAM is %d \n",driver_mem_pointer);
-	mapped = ioremap(base_addr,40); //for 5 registers 
+	mapped = ioremap(base_addr,56); //for 7 registers 
 	printk(KERN_INFO"Got address of peripherals");
 
 	dma_handle = dma_map_single(&dev_struct,driver_mem_pointer,786432,DMA_BIDIRECTIONAL);
@@ -85,8 +85,10 @@ static int my_open(struct inode*inode,struct file*file)
 
 	printk(KERN_INFO"Address 2 is %d \n",(uint64_t)dma_handle_2);
 
-	iowrite32(512,mapped + 32);
-
+	
+	iowrite32(512,mapped + 32); //length
+	iowrite32(512,mapped + 40); //width
+	iowrite32(3,mapped + 48); //kernel_size
 	
 	printk(KERN_INFO"Device File opened...");
 	return 0;
