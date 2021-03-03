@@ -69,7 +69,8 @@ static int my_open(struct inode*inode,struct file*file)
 		printk(KERN_INFO"Cannot allocate memory to the kernel\n");
 		return -1;
 	}
-
+	
+	printk(KERN_INFO"Address of Partition 1 in RAM is %d \n",driver_mem_pointer);
 	mapped = ioremap(base_addr,40); //for 5 registers 
 	printk(KERN_INFO"Got address of peripherals");
 
@@ -86,7 +87,6 @@ static int my_open(struct inode*inode,struct file*file)
 
 	iowrite32(512,mapped + 32);
 
-	iowrite32(1,mapped + 16);
 	
 	printk(KERN_INFO"Device File opened...");
 	return 0;
@@ -122,7 +122,9 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff_t*off)
 {
 	copy_from_user(driver_mem_pointer + (*off),buf,len);
-	printk(KERN_INFO"Data is written sucessfully \n");			
+	printk(KERN_INFO"Data is written sucessfully !!! \n");
+	iowrite32(1,mapped + 16);
+	printk(KERN_INFO"Trigger is active \n");	
 	return len;
 }
 
