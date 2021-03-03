@@ -10,11 +10,8 @@
 #include <linux/io.h>
 #include <linux/dma-mapping.h>
 
-#define IMG_HEIGHT 1243
-#define IMG_WIDTH 2048
-
-#define RGB_SIZE IMG_HEIGHT*IMG_WIDTH*3
-#define GRAY_SIZE IMG_HEIGHT*IMG_WIDTH
+#define RGB_SIZE 4194304
+#define GRAY_SIZE 2097152
 #define IOSTART 0x200
 #define IOEXTEND 0x40
 //#define base_addr 0x00A0000000
@@ -94,14 +91,14 @@ static int my_open(struct inode*inode,struct file*file)
 
 	printk(KERN_INFO"Address 2 is %d \n",(uint64_t)dma_gray);
 
-	iowrite32(512,mapped + 32);
 	
 	printk(KERN_INFO"Device File opened...");
 	return 0;
 }
 static my_release(struct inode*inode,struct file*file)
 {
-	kfree(driver_mem_pointer);
+	kfree(rgb_mem_pointer);
+	kfree(gray_mem_pointer);
 	printk(KERN_INFO"Device FILE closed...\n");
 	return 0;
 }
@@ -111,6 +108,7 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 	
 	device_read = ioread64(mapped);
 	printk(KERN_INFO"Address 1 get back is %d",device_read);
+
 	device_read = ioread64 (mapped + 8);
 	printk(KERN_INFO"Address 2 get back is %d",device_read);
 	
@@ -121,15 +119,18 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 	device_read= ioread32(mapped + 16);
 	printk(KERN_INFO"Start  get back is %d",device_read);
 
-	copy_to_user(buf,driver_mem_pointer + (*off) ,len); 
+	copy_to_user(buf,gray_mem_pointer + (*off) ,len); 
 	printk(KERN_INFO"Data read: DONE...\n");
 	return len;
 }
  
 static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff_t*off)
 {
-	copy_from_user(driver_mem_pointer + (*off),buf,len);
+	copy_from_user(rgb_mem_pointer + (*off),buf,len);
 	printk(KERN_INFO"Data is written sucessfully \n");
+
+	iowrite32(len,mapped + 32);
+
 	iowrite32(1,mapped + 16);
 	printk(KERN_INFO"Trigger is active \n");			
 	return len;
