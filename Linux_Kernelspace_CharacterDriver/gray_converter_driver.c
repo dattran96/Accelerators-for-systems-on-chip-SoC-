@@ -129,7 +129,7 @@ static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff
 	copy_from_user(rgb_mem_pointer + (*off),buf,len);
 	printk(KERN_INFO"Data is written sucessfully \n");
 
-	iowrite32(len,mapped + 32);
+	iowrite32(len / 3 ,mapped + 32);
 
 	iowrite32(1,mapped + 16);
 	printk(KERN_INFO"Trigger is active \n");			
