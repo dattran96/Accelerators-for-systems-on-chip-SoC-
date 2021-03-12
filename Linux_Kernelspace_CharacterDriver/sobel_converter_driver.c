@@ -75,7 +75,7 @@ static int my_open(struct inode*inode,struct file*file)
 		return -1;
 	}
 
-	printk(KERN_INFO"Device File opened...");
+	printk(KERN_INFO"Device File opened...\n");
 	return 0;
 }
 static my_release(struct inode*inode,struct file*file)
@@ -90,17 +90,17 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 {
 	
 	device_read = ioread64(mapped);
-	printk(KERN_INFO"Address 1 get back is %d",device_read);
+	printk(KERN_INFO"Address 1 get back is %d \n",device_read);
 
 	device_read = ioread64 (mapped + 8);
-	printk(KERN_INFO"Address 2 get back is %d",device_read);
+	printk(KERN_INFO"Address 2 get back is %d \n",device_read);
 	
 	device_read= ioread32(mapped + 32);
-	printk(KERN_INFO"Size  get back is %d",device_read);
+	printk(KERN_INFO"Size  get back is %d \n",device_read);
 
 
 	device_read= ioread32(mapped + 16);
-	printk(KERN_INFO"Start  get back is %d",device_read);
+	printk(KERN_INFO"Start  get back is %d \n",device_read);
 
 	dma_unmap_single(&dev_struct, dma_rgb, RGB_SIZE, DMA_BIDIRECTIONAL);
 	dma_unmap_single(&dev_struct, dma_gray, GRAY_SIZE, DMA_BIDIRECTIONAL);
@@ -117,11 +117,11 @@ static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff
 	
 	mapped = ioremap(base_addr,56); //for 5 registers 
 
-	printk(KERN_INFO"Got address of peripherals");
+	printk(KERN_INFO"Got address of peripherals \n");
 
 	dma_rgb = dma_map_single(&dev_struct, rgb_mem_pointer,RGB_SIZE,DMA_BIDIRECTIONAL);
 	
-	printk(KERN_INFO"dma mapping sucessfully");
+	printk(KERN_INFO"dma mapping sucessfully \n");
 	iowrite64(dma_rgb,mapped);
 
 	printk(KERN_INFO"Address 1 is %d \n",(uint64_t)dma_rgb);
@@ -160,7 +160,7 @@ static int __init chr_driver_init(void)
 
 /*Adding character device to the system*/
 	if((cdev_add(&my_cdev,dev,1)) < 0) {
-		printk(KERN_INFO"Cannot add the device to the system");
+		printk(KERN_INFO"Cannot add the device to the system \n");
 		goto r_class;
 	}
 
@@ -191,7 +191,7 @@ void __exit chr_driver_exit(void){
 	class_destroy(dev_class);
 	cdev_del(&my_cdev);
 	unregister_chrdev_region(dev,1);
-	printk(KERN_INFO"Device driver is removed succesfully");	
+	printk(KERN_INFO"Device driver is removed succesfully\n");	
 }
 
 module_init(chr_driver_init);
