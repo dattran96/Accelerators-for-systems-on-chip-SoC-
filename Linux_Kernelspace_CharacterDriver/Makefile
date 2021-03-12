@@ -1,10 +1,10 @@
-TARGET_MODULE:=sobel_converter_driver
+TARGET_MODULE:=gray_converter_driver
 
 ifneq ($(KERNELRELEASE),)
 	#$(TARGET_MODULE)-objs := $(TARGET_MODULE).o
 	obj-m:=$(TARGET_MODULE).o	
 else	
-	BUILDSYSTEM_DIR:=/home/stud/nt92homu/echo2/linux-xlnx
+	BUILDSYSTEM_DIR:=/home/stud/mt60feqy/echo2/linux-xlnx
 	PWD:=$(shell pwd)
 all:
 	$(MAKE) -C $(BUILDSYSTEM_DIR) M=$(PWD) modules
