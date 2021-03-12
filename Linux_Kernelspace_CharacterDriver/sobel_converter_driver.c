@@ -75,26 +75,6 @@ static int my_open(struct inode*inode,struct file*file)
 		return -1;
 	}
 
-	mapped = ioremap(base_addr,56); //for 5 registers 
-
-	printk(KERN_INFO"Got address of peripherals");
-
-	dma_rgb = dma_map_single(&dev_struct, rgb_mem_pointer,RGB_SIZE,DMA_BIDIRECTIONAL);
-	
-	printk(KERN_INFO"dma mapping sucessfully");
-	iowrite64(dma_rgb,mapped);
-
-	printk(KERN_INFO"Address 1 is %d \n",(uint64_t)dma_rgb);
-
-	dma_gray = dma_map_single(&dev_struct, gray_mem_pointer, GRAY_SIZE, DMA_BIDIRECTIONAL);
-	iowrite64((uint32_t)dma_gray,mapped + 8);
-
-	printk(KERN_INFO"Address 2 is %d \n",(uint64_t)dma_gray);
-
-	iowrite32(512,mapped + 32); //length
-	iowrite32(512,mapped + 40); //width
-	iowrite32(7,mapped + 48); //kernel_size
-	
 	printk(KERN_INFO"Device File opened...");
 	return 0;
 }
@@ -122,6 +102,9 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 	device_read= ioread32(mapped + 16);
 	printk(KERN_INFO"Start  get back is %d",device_read);
 
+	dma_unmap_single(&dev_struct, dma_rgb, RGB_SIZE, DMA_BIDIRECTIONAL);
+	dma_unmap_single(&dev_struct, dma_gray, GRAY_SIZE, DMA_BIDIRECTIONAL);
+	
 	copy_to_user(buf,gray_mem_pointer + (*off) ,len); 
 	printk(KERN_INFO"Data read: DONE...\n");
 	return len;
@@ -131,6 +114,28 @@ static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff
 {
 	copy_from_user(rgb_mem_pointer + (*off),buf,len);
 	printk(KERN_INFO"Data is written sucessfully \n");
+	
+	mapped = ioremap(base_addr,56); //for 5 registers 
+
+	printk(KERN_INFO"Got address of peripherals");
+
+	dma_rgb = dma_map_single(&dev_struct, rgb_mem_pointer,RGB_SIZE,DMA_BIDIRECTIONAL);
+	
+	printk(KERN_INFO"dma mapping sucessfully");
+	iowrite64(dma_rgb,mapped);
+
+	printk(KERN_INFO"Address 1 is %d \n",(uint64_t)dma_rgb);
+
+	dma_gray = dma_map_single(&dev_struct, gray_mem_pointer, GRAY_SIZE, DMA_BIDIRECTIONAL);
+	iowrite64((uint32_t)dma_gray,mapped + 8);
+
+	printk(KERN_INFO"Address 2 is %d \n",(uint64_t)dma_gray);
+
+	iowrite32(512,mapped + 32); //length
+	iowrite32(512,mapped + 40); //width
+	iowrite32(7,mapped + 48); //kernel_size
+	
+	
 	iowrite32(1,mapped + 16);
 	printk(KERN_INFO"Trigger is active \n");	
 	return len;
