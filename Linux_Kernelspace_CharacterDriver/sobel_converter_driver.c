@@ -131,9 +131,9 @@ static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff
 
 	printk(KERN_INFO"Address 2 is %d \n",(uint64_t)dma_gray);
 
-	iowrite32(512,mapped + 32); //length
-	iowrite32(512,mapped + 40); //width
-	iowrite32(7,mapped + 48); //kernel_size
+	//iowrite32(512,mapped + 32); //length
+	//iowrite32(512,mapped + 40); //width
+	//iowrite32(7,mapped + 48); //kernel_size
 	
 	
 	iowrite32(1,mapped + 16);
