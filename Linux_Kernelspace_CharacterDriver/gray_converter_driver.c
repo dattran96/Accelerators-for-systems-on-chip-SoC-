@@ -102,8 +102,8 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 	device_read= ioread32(mapped + 16);
 	printk(KERN_INFO"Start  get back is %d\n",device_read);
 
-	dma_unmap_single(&dev_struct, rgb_mem_pointer, RGB_SIZE, DMA_BIDIRECTIONAL);
-	dma_unmap_single(&dev_struct, gray_mem_pointer, GRAY_SIZE, DMA_BIDIRECTIONAL);
+	dma_unmap_single(&dev_struct, dma_rgb, RGB_SIZE, DMA_BIDIRECTIONAL);
+	dma_unmap_single(&dev_struct, dma_gray, GRAY_SIZE, DMA_BIDIRECTIONAL);
 	
 	copy_to_user(buf,gray_mem_pointer + (*off) ,len); 
 	printk(KERN_INFO"Data read: DONE...\n");
