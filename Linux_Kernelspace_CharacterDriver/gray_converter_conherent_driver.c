@@ -63,13 +63,13 @@ static struct device dev_struct = {
 static int my_open(struct inode*inode,struct file*file)
 {
 	/*Creating Physical Memory*/
-	if ((rgb_mem_pointer = dma_alloc_coherent(&dev_struct, RGB_SIZE, dma_rgb, GFP_KERNEL)) == 0)
+	if ((rgb_mem_pointer = dma_alloc_coherent(&dev_struct, RGB_SIZE, &dma_rgb, GFP_KERNEL)) == 0)
 	{
 		printk(KERN_INFO"Cannot allocate memory to rgb image in the kernel\n");
 		return -1;
 	}
 
-	if ((gray_mem_pointer = dma_alloc_coherent(&dev_struct, GRAY_SIZE, dma_gray, GFP_KERNEL)) == 0)
+	if ((gray_mem_pointer = dma_alloc_coherent(&dev_struct, GRAY_SIZE, &dma_gray, GFP_KERNEL)) == 0)
 	{
 		printk(KERN_INFO"Cannot allocate memory to gray image in the kernel\n");
 		return -1;
