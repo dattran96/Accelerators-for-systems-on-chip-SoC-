@@ -80,8 +80,8 @@ static int my_open(struct inode*inode,struct file*file)
 }
 static my_release(struct inode*inode,struct file*file)
 {
-	dma_free_coherent(&dev, RGB_SIZE, rgb_mem_pointer, dma_rgb);
-	dma_free_coherent(&dev, GRAY_SIZE, gray_mem_pointer, dma_gray);
+	dma_free_coherent(&dev_struct, RGB_SIZE, rgb_mem_pointer, dma_rgb);
+	dma_free_coherent(&dev_struct, GRAY_SIZE, gray_mem_pointer, dma_gray);
 	printk(KERN_INFO"Device FILE closed...\n");
 	return 0;
 }

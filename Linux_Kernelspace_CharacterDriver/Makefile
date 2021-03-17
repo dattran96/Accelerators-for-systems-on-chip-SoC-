@@ -1,4 +1,4 @@
-TARGET_MODULE:=sobel_converter_driver
+TARGET_MODULE:=gray_converter_conherent_driver
 
 ifneq ($(KERNELRELEASE),)
 	#$(TARGET_MODULE)-objs := $(TARGET_MODULE).o
