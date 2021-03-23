@@ -290,7 +290,8 @@ module mkAXIConverter(AXIConverter);
    	Reg#(Bool) window_Initial <- mkReg(False);
    	Reg#(Bool) rowBuffer_inital <- mkReg(True);
   	Reg#(Bit#(32)) bufferRowCount <- mkReg(0);
-	Reg#(Bool) sobelConvert <- mkReg(False);
+	Reg#(Bool) pre_sobelConvert <- mkReg(False); //to avoid long critical path, sobel operator can not be written in one single rule, but distributed into 2 rules, this flag will activate the fist rule and the sobelConvert flag will activate the second rule
+	Reg#(Bool) sobelConvert <- mkReg(False); // activate the first rule
 	
 	Reg#(Bit#(32)) kernel_size <- mkReg(7); //PAY ATTENTION, SUBJECT to CHANGE
    	Reg#(Bit#(32)) image_width <- mkReg(512); //PAY ATTENTION, SUBJECT to CHANGE
@@ -513,14 +514,14 @@ module mkAXIConverter(AXIConverter);
 		if(bufferRowCount >= image_length*(kernel_size-1) + kernel_size -1 && windowBuffer_once_inital == False) begin //512+ 512+ 9 //PAY ATTENTION  change
 			//window_Initial <= False;
 			windowBuffer_once_inital <= True;
-			sobelConvert <= True; //command
+			pre_sobelConvert <= True; //command
 			//slide_finish <= False; //Reset slide status
 		end
 		
 		else if(bufferRowCount >= image_length*image_width-1) begin
 			$display("Test Here 99");
 			window_Initial <= False;
-			sobelConvert <= False;
+			pre_sobelConvert <= False;
 			slide <= False;
 		end
 		//$display("slide position %d pixel read %d",slide_position,bufferRowCount);
@@ -528,21 +529,10 @@ module mkAXIConverter(AXIConverter);
 	
 	  
  	
- 	
-	FIFOF#(Bit#(128)) buffer_out <- mkSizedFIFOF(100);
-   	Reg#(Bit#(128)) out_hold <- mkReg(0);
-   	Reg#(Bit#(8)) out_count <- mkReg(0);
-	Reg#(Bit#(8)) sobelState <- mkReg(0);
-   	rule sobelOperator(sobelConvert == True && slide_position != 1 &&  slide_position != 2 &&  
-			slide_position != 3 &&  slide_position != 4 &&  slide_position != 5 &&  slide_position != 6);
-   		slide_finish <= False; //Reset slide status
-		
-		Int#(32) sum_1 ;
-		Int#(32) sum_2 ;
-		Int#(32) sum_12;
-		Bit#(8) outPixel;		
-
-		sum_1 = signExtend(gx_reg11*unpack(zExtend(reg11)) + gx_reg12*unpack(zExtend(reg12)) + gx_reg13*unpack(zExtend(reg13))+ gx_reg14*unpack(zExtend(reg14)) + 			gx_reg15*unpack(zExtend(reg15)) + gx_reg16*unpack(zExtend(reg16))+ gx_reg17*unpack(zExtend(reg17)) +
+ 	Reg#(Int#(32)) sum_1 <- mkReg(0);
+ 	rule pre_sobelOperator1 if (pre_sobelConvert == True && slide_position != 1 &&  slide_position != 2 && 
+ 			slide_position != 3 &&  slide_position != 4 &&  slide_position != 5 &&  slide_position != 6 ); //calculate first sum of the sober operator
+		sum_1 <= signExtend(gx_reg11*unpack(zExtend(reg11)) + gx_reg12*unpack(zExtend(reg12)) + gx_reg13*unpack(zExtend(reg13))+ gx_reg14*unpack(zExtend(reg14)) + 			gx_reg15*unpack(zExtend(reg15)) + gx_reg16*unpack(zExtend(reg16))+ gx_reg17*unpack(zExtend(reg17)) +
 		
 		gx_reg21*unpack(zExtend(reg21)) + gx_reg22*unpack(zExtend(reg22)) + gx_reg23*unpack(zExtend(reg23))+ gx_reg24*unpack(zExtend(reg24)) + 
 		gx_reg25*unpack(zExtend(reg25)) + gx_reg26*unpack(zExtend(reg26))+ gx_reg27*unpack(zExtend(reg27)) +
@@ -560,10 +550,14 @@ module mkAXIConverter(AXIConverter);
 		gx_reg65*unpack(zExtend(reg65)) + gx_reg66*unpack(zExtend(reg66))+ gx_reg67*unpack(zExtend(reg67)) +
 		
 		gx_reg71*unpack(zExtend(reg71)) + gx_reg72*unpack(zExtend(reg72)) + gx_reg73*unpack(zExtend(reg73))+ gx_reg74*unpack(zExtend(reg74)) + 
-		gx_reg75*unpack(zExtend(reg75)) + gx_reg76*unpack(zExtend(reg76))+ gx_reg77*unpack(zExtend(reg77)));
-		
-		
-		sum_2 = signExtend(gy_reg11*unpack(zExtend(reg11)) + gy_reg12*unpack(zExtend(reg12)) + gy_reg13*unpack(zExtend(reg13))+ gy_reg14*unpack(zExtend(reg14)) + 			gy_reg15*unpack(zExtend(reg15)) + gy_reg16*unpack(zExtend(reg16))+ gy_reg17*unpack(zExtend(reg17)) +
+		gx_reg75*unpack(zExtend(reg75)) + gx_reg76*unpack(zExtend(reg76))+ gx_reg77*unpack(zExtend(reg77)));	
+			
+	endrule
+ 	
+ 	Reg#(Int#(32)) sum_2 <- mkReg(0);
+ 	rule pre_sobelOperator2 if (pre_sobelConvert == True && slide_position != 1 &&  slide_position != 2 &&  
+			slide_position != 3 &&  slide_position != 4 &&  slide_position != 5 &&  slide_position != 6 ); //calculate first sum of the sober operator
+		sum_2 <= signExtend(gy_reg11*unpack(zExtend(reg11)) + gy_reg12*unpack(zExtend(reg12)) + gy_reg13*unpack(zExtend(reg13))+ gy_reg14*unpack(zExtend(reg14)) + 			gy_reg15*unpack(zExtend(reg15)) + gy_reg16*unpack(zExtend(reg16))+ gy_reg17*unpack(zExtend(reg17)) +
 		
 		gy_reg21*unpack(zExtend(reg21)) + gy_reg22*unpack(zExtend(reg22)) + gy_reg23*unpack(zExtend(reg23))+ gy_reg24*unpack(zExtend(reg24)) + 
 		gy_reg25*unpack(zExtend(reg25)) + gy_reg26*unpack(zExtend(reg26))+ gy_reg27*unpack(zExtend(reg27)) +
@@ -582,15 +576,39 @@ module mkAXIConverter(AXIConverter);
 		
 		gy_reg71*unpack(zExtend(reg71)) + gy_reg72*unpack(zExtend(reg72)) + gy_reg73*unpack(zExtend(reg73))+ gy_reg74*unpack(zExtend(reg74)) + 
 		gy_reg75*unpack(zExtend(reg75)) + gy_reg76*unpack(zExtend(reg76))+ gy_reg77*unpack(zExtend(reg77)));
+			
+			
+		if(sobelConvert==False  && bufferRowCount < image_length*image_width) begin
+			sobelConvert <= True;
+		end
+		else if(sobelConvert==True && bufferRowCount == image_length*image_width) begin
+			sobelConvert <= False;
+		end	
+	endrule
+	
+	
+ 	
+	FIFOF#(Bit#(128)) buffer_out <- mkSizedFIFOF(100);
+   	Reg#(Bit#(128)) out_hold <- mkReg(0);
+   	Reg#(Bit#(8)) out_count <- mkReg(0);
+	Reg#(Bit#(8)) sobelState <- mkReg(0);
+   	rule sobelOperator(sobelConvert == True && slide_position != 1 &&  slide_position != 2 &&  
+			slide_position != 3 &&  slide_position != 4 &&  slide_position != 5 &&  slide_position != 6);
+   		slide_finish <= False; //Reset slide status
 		
+		Int#(32) sum_1_absolute =0;
+		Int#(32) sum_2_absolute =0;
+		Int#(32) sum_12;
+		Bit#(8) outPixel;		
+
 		if( sum_1 < 0) begin
-   			sum_1 = sum_1*-1;
+   			sum_1_absolute = sum_1*-1;
    		end
    		if( sum_2 < 0) begin
-   			sum_2 = sum_2*-1;
+   			sum_2_absolute = sum_2*-1;
    		end
    		
-   		sum_12 = sum_1 + sum_2;
+   		sum_12 = sum_1_absolute + sum_2_absolute;
 		
 		if(kernel_size_read == 7) begin
 	   		//sum_12 <= sum_12*255 / 175550;
