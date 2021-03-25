@@ -1,4 +1,4 @@
-TARGET_MODULE:=gray_converter_conherent_driver
+TARGET_MODULE:=task3_driver
 
 ifneq ($(KERNELRELEASE),)
 	#$(TARGET_MODULE)-objs := $(TARGET_MODULE).o
