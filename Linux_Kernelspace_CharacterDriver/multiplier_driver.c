@@ -19,12 +19,11 @@ dev_t dev = 0;
 #define base_addr 0x0400000000
 
 static int __init chr_driver_init(void);
-static void __exit chr_driver_exit(void);
 static int device_open(struct inode*inode, struct file*file);
 static int device_release(struct inode*inode,struct file * file);
 static ssize_t device_read(struct file*filp, char __user*buf,size_t len,loff_t*off);
 static ssize_t device_write(struct file*filp,const char *buf, size_t len,loff_t* off);
-
+static void __exit chr_driver_exit(void);
 
 static struct file_operations fops = 
 {
@@ -80,16 +79,11 @@ static ssize_t device_write(struct file*filp, const char __user*buf,size_t len, 
 
 static int __init chr_driver_init(void)
 {
-	/*Allocating Major Number*/
 	alloc_chrdev_region(&dev,0,1,"DMA_API_img");
-	/*Creating cdev structure*/
 	cdev_init(&my_cdev,&fops);	
-	/*Adding character device to the system*/
 	cdev_add(&my_cdev,dev,1);
-	/*creating struct class*/
 	dev_class = class_create(THIS_MODULE,"my_class");
-	/*creating device*/
-	device_create(dev_class,NULL,dev,NULL,"my_device");
+	device_create(dev_class,NULL,dev,NULL,"my_character_device");
 	printk(KERN_INFO"driver installed succesfully..\n");
 	return 0;
 }
