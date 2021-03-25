@@ -140,5 +140,5 @@ module_exit(chr_driver_exit);
 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Quang");
+MODULE_AUTHOR("Dat");
 MODULE_DESCRIPTION("The characeter device driver");
