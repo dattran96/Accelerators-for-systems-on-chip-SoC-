@@ -4,6 +4,7 @@ import BlueAXI::*;
 import GetPut::*;
 import BUtils :: *;
 import FIFOF :: *;
+import Vector::*;
 
 interface AXIConverter;
 	// Add custom interface definitions
@@ -165,125 +166,22 @@ module mkAXIConverter(AXIConverter);
 		enq_order <= enq_order + 1;
    	endrule
   	
-  	Reg#(Int#(32)) gx_reg11 <- mkReg(-1);
-	Reg#(Int#(32)) gx_reg12 <- mkReg(-4);
-	Reg#(Int#(32)) gx_reg13 <- mkReg(-5);
-	Reg#(Int#(32)) gx_reg14 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg15 <- mkReg(5);
-	Reg#(Int#(32)) gx_reg16 <- mkReg(4);	
-	Reg#(Int#(32)) gx_reg17 <- mkReg(1);
-
-	Reg#(Int#(32)) gx_reg21 <- mkReg(-6);
-	Reg#(Int#(32)) gx_reg22 <- mkReg(-24);
-	Reg#(Int#(32)) gx_reg23 <- mkReg(-30);
-	Reg#(Int#(32)) gx_reg24 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg25 <- mkReg(30);
-	Reg#(Int#(32)) gx_reg26 <- mkReg(24);	
-	Reg#(Int#(32)) gx_reg27 <- mkReg(6);
-
-	Reg#(Int#(32)) gx_reg31 <- mkReg(-15);
-	Reg#(Int#(32)) gx_reg32 <- mkReg(-60);
-	Reg#(Int#(32)) gx_reg33 <- mkReg(-75);
-	Reg#(Int#(32)) gx_reg34 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg35 <- mkReg(75);
-	Reg#(Int#(32)) gx_reg36 <- mkReg(60);	
-	Reg#(Int#(32)) gx_reg37 <- mkReg(15);
-
-	Reg#(Int#(32)) gx_reg41 <- mkReg(-20);
-	Reg#(Int#(32)) gx_reg42 <- mkReg(-80);
-	Reg#(Int#(32)) gx_reg43 <- mkReg(-100);
-	Reg#(Int#(32)) gx_reg44 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg45 <- mkReg(100);
-	Reg#(Int#(32)) gx_reg46 <- mkReg(80);	
-	Reg#(Int#(32)) gx_reg47 <- mkReg(20);
-
-	Reg#(Int#(32)) gx_reg51 <- mkReg(-15);
-	Reg#(Int#(32)) gx_reg52 <- mkReg(-60);
-	Reg#(Int#(32)) gx_reg53 <- mkReg(-75);
-	Reg#(Int#(32)) gx_reg54 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg55 <- mkReg(75);
-	Reg#(Int#(32)) gx_reg56 <- mkReg(60);	
-	Reg#(Int#(32)) gx_reg57 <- mkReg(15);
-
-	Reg#(Int#(32)) gx_reg61 <- mkReg(-6);
-	Reg#(Int#(32)) gx_reg62 <- mkReg(-24);
-	Reg#(Int#(32)) gx_reg63 <- mkReg(-30);
-	Reg#(Int#(32)) gx_reg64 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg65 <- mkReg(30);
-	Reg#(Int#(32)) gx_reg66 <- mkReg(24);	
-	Reg#(Int#(32)) gx_reg67 <- mkReg(6);
-
-	Reg#(Int#(32)) gx_reg71 <- mkReg(-1);
-	Reg#(Int#(32)) gx_reg72 <- mkReg(-4);
-	Reg#(Int#(32)) gx_reg73 <- mkReg(-5);
-	Reg#(Int#(32)) gx_reg74 <- mkReg(0);
-	Reg#(Int#(32)) gx_reg75 <- mkReg(5);
-	Reg#(Int#(32)) gx_reg76 <- mkReg(4);	
-	Reg#(Int#(32)) gx_reg77 <- mkReg(1);
-
-	Reg#(Int#(32)) gy_reg11 <- mkReg(-1);
-	Reg#(Int#(32)) gy_reg12 <- mkReg(-6);
-	Reg#(Int#(32)) gy_reg13 <- mkReg(-15);
-	Reg#(Int#(32)) gy_reg14 <- mkReg(-20);
-	Reg#(Int#(32)) gy_reg15 <- mkReg(-15);
-	Reg#(Int#(32)) gy_reg16 <- mkReg(-6);	
-	Reg#(Int#(32)) gy_reg17 <- mkReg(-1);
-
-	Reg#(Int#(32)) gy_reg21 <- mkReg(-4);
-	Reg#(Int#(32)) gy_reg22 <- mkReg(-24);
-	Reg#(Int#(32)) gy_reg23 <- mkReg(-60);
-	Reg#(Int#(32)) gy_reg24 <- mkReg(-80);
-	Reg#(Int#(32)) gy_reg25 <- mkReg(-60);
-	Reg#(Int#(32)) gy_reg26 <- mkReg(-24);	
-	Reg#(Int#(32)) gy_reg27 <- mkReg(-4);
-
-	Reg#(Int#(32)) gy_reg31 <- mkReg(-5);
-	Reg#(Int#(32)) gy_reg32 <- mkReg(-30);
-	Reg#(Int#(32)) gy_reg33 <- mkReg(-75);
-	Reg#(Int#(32)) gy_reg34 <- mkReg(-100);
-	Reg#(Int#(32)) gy_reg35 <- mkReg(-75);
-	Reg#(Int#(32)) gy_reg36 <- mkReg(-30);	
-	Reg#(Int#(32)) gy_reg37 <- mkReg(-5);
-
-	Reg#(Int#(32)) gy_reg41 <- mkReg(0);
-	Reg#(Int#(32)) gy_reg42 <- mkReg(0);
-	Reg#(Int#(32)) gy_reg43 <- mkReg(0);
-	Reg#(Int#(32)) gy_reg44 <- mkReg(0);
-	Reg#(Int#(32)) gy_reg45 <- mkReg(0);
-	Reg#(Int#(32)) gy_reg46 <- mkReg(0);	
-	Reg#(Int#(32)) gy_reg47 <- mkReg(0);
-
-	Reg#(Int#(32)) gy_reg51 <- mkReg(5);
-	Reg#(Int#(32)) gy_reg52 <- mkReg(30);
-	Reg#(Int#(32)) gy_reg53 <- mkReg(75);
-	Reg#(Int#(32)) gy_reg54 <- mkReg(100);
-	Reg#(Int#(32)) gy_reg55 <- mkReg(75);
-	Reg#(Int#(32)) gy_reg56 <- mkReg(30);	
-	Reg#(Int#(32)) gy_reg57 <- mkReg(5);
-
-	Reg#(Int#(32)) gy_reg61 <- mkReg(4);
-	Reg#(Int#(32)) gy_reg62 <- mkReg(24);
-	Reg#(Int#(32)) gy_reg63 <- mkReg(60);
-	Reg#(Int#(32)) gy_reg64 <- mkReg(80);
-	Reg#(Int#(32)) gy_reg65 <- mkReg(60);
-	Reg#(Int#(32)) gy_reg66 <- mkReg(24);	
-	Reg#(Int#(32)) gy_reg67 <- mkReg(4);
-
-	Reg#(Int#(32)) gy_reg71 <- mkReg(1);
-	Reg#(Int#(32)) gy_reg72 <- mkReg(6);
-	Reg#(Int#(32)) gy_reg73 <- mkReg(15);
-	Reg#(Int#(32)) gy_reg74 <- mkReg(20);
-	Reg#(Int#(32)) gy_reg75 <- mkReg(15);
-	Reg#(Int#(32)) gy_reg76 <- mkReg(6);	
-   	Reg#(Int#(32)) gy_reg77 <- mkReg(1);	
+   	
+   	Reg#(Int#(32)) gx_reg[7][7];
+   	Reg#(Int#(32)) gy_reg[7][7];
+   	for (Integer i=0; i<7; i=i+1)
+		for (Integer j=0; j<7; j=j+1)
+			gx_reg[i][j] <- mkReg(0);
+	for (Integer i=0; i<7; i=i+1)
+		for (Integer j=0; j<7; j=j+1)
+			gy_reg[i][j] <- mkReg(0);
+   		
    	Reg#(Int#(32)) threshold <- mkReg(70);
-  	
-  	FIFOF#(Bit#(8)) rowBuffer_1 <- mkSizedFIFOF(3000);  //PAY ATTENTION, SUBJECT to CHANGE
-   	FIFOF#(Bit#(8)) rowBuffer_2 <- mkSizedFIFOF(3000);  //PAY ATTENTION, SUBJECT to CHANGE
-   	FIFOF#(Bit#(8)) rowBuffer_3 <- mkSizedFIFOF(3000);  //PAY ATTENTION, SUBJECT to CHANGE
-  	FIFOF#(Bit#(8)) rowBuffer_4 <- mkSizedFIFOF(3000);  //PAY ATTENTION, SUBJECT to CHANGE
-   	FIFOF#(Bit#(8)) rowBuffer_5 <- mkSizedFIFOF(3000);  //PAY ATTENTION, SUBJECT to CHANGE
-   	FIFOF#(Bit#(8)) rowBuffer_6 <- mkSizedFIFOF(3000);  //PAY ATTENTION, SUBJECT to CHANGE
+
+   	FIFOF#(Bit#(8)) rowBuffer_array[6];
+   	
+   	for (Integer i=0; i<6; i=i+1)
+		rowBuffer_array[i] <- mkSizedFIFOF(3000); //PAY ATTENTION, SUBJECT to CHANGE
   	
   	Reg#(Bool) windowReady <- mkReg(False); //issue to other rules that data of 9 pixel are ready
    	Reg#(Bool) windowSlide <- mkReg(False); // other rules set this bit to issue they need new window data
@@ -303,57 +201,57 @@ module mkAXIConverter(AXIConverter);
 		image_width <= image_width_read[31:0];
 		image_length <= image_length_read[31:0];
 		if(kernel_size_read==7) begin
-			gy_reg11 <= -1;gy_reg12 <= -6;gy_reg13 <= -15;gy_reg14 <= -20;gy_reg15 <= -15;gy_reg16 <= -6;gy_reg17 <= -1;
-			gy_reg21 <= -4;gy_reg22 <= -24;gy_reg23 <= -60;gy_reg24 <= -80;gy_reg25 <= -60;gy_reg26 <= -24;gy_reg27 <= -4;
-			gy_reg31 <= -5;gy_reg32 <= -30;gy_reg33 <= -75;gy_reg34 <= -100;gy_reg35 <= -75;gy_reg36 <= -30;gy_reg37 <= -5;
-			gy_reg41 <= 0;gy_reg42 <= 0;gy_reg43 <= 0;gy_reg44 <= 0;gy_reg45 <= 0;gy_reg46 <= 0;gy_reg47 <= 0;
-			gy_reg51 <= 5;gy_reg52 <= 30;gy_reg53 <= 75;gy_reg54 <= 100;gy_reg55 <= 75;gy_reg56 <= 30;gy_reg57 <= 5;
-			gy_reg61 <= 4;gy_reg62 <= 24;gy_reg63 <= 60;gy_reg64 <= 80;gy_reg65 <= 60;gy_reg66 <= 24;gy_reg67 <= 4;
-			gy_reg71 <= 1;gy_reg72 <= 6;gy_reg73 <= 15;gy_reg74 <= 20;gy_reg75 <= 15;gy_reg76 <= 6;gy_reg77 <= 1;
+			gy_reg[0][0] <= -1;gy_reg[0][1] <=  -6;gy_reg[0][2] <= -15;gy_reg[0][3] <=  -20;gy_reg[0][4] <= -15;gy_reg[0][5] <=  -6;gy_reg[0][6] <= -1;
+			gy_reg[1][0] <= -4;gy_reg[1][1] <= -24;gy_reg[1][2] <= -60;gy_reg[1][3] <=  -80;gy_reg[1][4] <= -60;gy_reg[1][5] <= -24;gy_reg[1][6] <= -4;
+			gy_reg[2][0] <= -5;gy_reg[2][1] <= -30;gy_reg[2][2] <= -75;gy_reg[2][3] <= -100;gy_reg[2][4] <= -75;gy_reg[2][5] <= -30;gy_reg[2][6] <= -5;
+			gy_reg[3][0] <=  0;gy_reg[3][1] <=   0;gy_reg[3][2] <=   0;gy_reg[3][3] <=    0;gy_reg[3][4] <=   0;gy_reg[3][5] <=   0;gy_reg[3][6] <= 0;
+			gy_reg[4][0] <=  5;gy_reg[4][1] <=  30;gy_reg[4][2] <=  75;gy_reg[4][3] <=  100;gy_reg[4][4] <=  75;gy_reg[4][5] <=  30;gy_reg[4][6] <= 5;
+			gy_reg[5][0] <=  4;gy_reg[5][1] <=  24;gy_reg[5][2] <=  60;gy_reg[5][3] <=   80;gy_reg[5][4] <=  60;gy_reg[5][5] <=  24;gy_reg[5][6] <= 4;
+			gy_reg[6][0] <=  1;gy_reg[6][1] <=   6;gy_reg[6][2] <=  15;gy_reg[6][3] <=   20;gy_reg[6][4] <=  15;gy_reg[6][5] <=   6;gy_reg[6][6] <= 1;
 		
-			gx_reg11 <= -1;gx_reg12 <= -4;gx_reg13 <= -5;gx_reg14 <= 0;gx_reg15 <= 5;gx_reg16 <= 4;gx_reg17 <= 1;
-			gx_reg21 <= -6;gx_reg22 <= -24;gx_reg23 <= -30;gx_reg24 <= 0;gx_reg25 <= 30;gx_reg26 <= 24;gx_reg27 <= 6;
-			gx_reg31 <= -15;gx_reg32 <= -60;gx_reg33 <= -75;gx_reg34 <= 0;gx_reg35 <= 75;gx_reg36 <= 60;gx_reg37 <= 15;
-			gx_reg41 <= -20;gx_reg42 <= -80;gx_reg43 <= -100;gx_reg44 <= 0;gx_reg45 <= 100;gx_reg46 <= 80;gx_reg47 <= 20;
-			gx_reg51 <= -15;gx_reg52 <= -60;gx_reg53 <= -75;gx_reg54 <= 0;gx_reg55 <= 75;gx_reg56 <= 60;gx_reg57 <= 15;
-			gx_reg61 <= -6;gx_reg62 <= -24;gx_reg63 <= -30;gx_reg64 <= 0;gx_reg65 <= 30;gx_reg66 <= 24;gx_reg67 <= 6;
-			gx_reg71 <= -1;gx_reg72 <= -4;gx_reg73 <= -5;gx_reg74 <= 0;gx_reg75 <= 5;gx_reg76 <= 4;gx_reg77 <= 1;
-			threshold <= 70;
+			gx_reg[0][0] <=  -1;gx_reg[0][1] <=  -4;gx_reg[0][2] <=  -5;gx_reg[0][3] <= 0;gx_reg[0][4] <=  5;gx_reg[0][5] <=  4;gx_reg[0][6] <= 1;
+			gx_reg[1][0] <=  -6;gx_reg[1][1] <= -24;gx_reg[1][2] <= -30;gx_reg[1][3] <= 0;gx_reg[1][4] <= 30;gx_reg[1][5] <= 24;gx_reg[1][6] <= 6;
+			gx_reg[2][0] <= -15;gx_reg[2][1] <= -60;gx_reg[2][2] <= -75;gx_reg[2][3] <= 0;gx_reg[2][4] <= 75;gx_reg[2][5] <= 60;gx_reg[2][6] <= 15;
+			gx_reg[3][0] <= -20;gx_reg[3][1] <= -80;gx_reg[3][2] <= -100;gx_reg[3][3] <= 0;gx_reg[3][4] <= 100;gx_reg[3][5] <= 80;gx_reg[3][6] <= 20;
+			gx_reg[4][0] <= -15;gx_reg[4][1] <= -60;gx_reg[4][2] <= -75;gx_reg[4][3] <= 0;gx_reg[4][4] <= 75;gx_reg[4][5] <= 60;gx_reg[4][6] <= 15;
+			gx_reg[5][0] <= -6;gx_reg[5][1] <= -24;gx_reg[5][2] <= -30;gx_reg[5][3] <= 0;gx_reg[5][4] <= 30;gx_reg[5][5] <= 24;gx_reg[5][6] <= 6;
+			gx_reg[6][0] <= -1;gx_reg[6][1] <= -4;gx_reg[6][2] <= -5;gx_reg[6][3] <= 0;gx_reg[6][4] <= 5;gx_reg[6][5] <= 4;gx_reg[6][6] <= 1;
+			threshold <= 70;				
 		end
 		else if(kernel_size_read==5) begin
-			gy_reg11 <= 0;gy_reg12 <= 0;gy_reg13 <= 0;gy_reg14 <= 0;gy_reg15 <= 0;gy_reg16 <= 0;gy_reg17 <= 0;
-			gy_reg21 <= 0;gy_reg22 <= -1;gy_reg23 <= -4;gy_reg24 <= -6;gy_reg25 <= -4;gy_reg26 <= -1;gy_reg27 <= 0;
-			gy_reg31 <= 0;gy_reg32 <= -2;gy_reg33 <= -8;gy_reg34 <= -12;gy_reg35 <= -8;gy_reg36 <= -2;gy_reg37 <= 0;
-			gy_reg41 <= 0;gy_reg42 <= 0;gy_reg43 <= 0;gy_reg44 <= 0;gy_reg45 <= 0;gy_reg46 <= 0;gy_reg47 <= 0;
-			gy_reg51 <= 0;gy_reg52 <= 2;gy_reg53 <= 8;gy_reg54 <= 12;gy_reg55 <= 8;gy_reg56 <= 2;gy_reg57 <= 0;
-			gy_reg61 <= 0;gy_reg62 <= 1;gy_reg63 <= 4;gy_reg64 <= 6;gy_reg65 <= 4;gy_reg66 <= 1;gy_reg67 <= 0;
-			gy_reg71 <= 0;gy_reg72 <= 0;gy_reg73 <= 0;gy_reg74 <= 0;gy_reg75 <= 0;gy_reg76 <= 0;gy_reg77 <= 0;
+			gy_reg[0][0] <= 0;gy_reg[0][1] <= 0;gy_reg[0][2] <= 0;gy_reg[0][3] <= 0;gy_reg[0][4] <= 0;gy_reg[0][5] <= 0;gy_reg[0][6] <= 0;
+			gy_reg[1][0] <= 0;gy_reg[1][1] <= -1;gy_reg[1][2] <= -4;gy_reg[1][3] <= -6;gy_reg[1][4] <= -4;gy_reg[1][5] <= -1;gy_reg[1][6] <= 0;
+			gy_reg[2][0] <= 0;gy_reg[2][1] <= -2;gy_reg[2][2] <= -8;gy_reg[2][3] <= -12;gy_reg[2][4] <= -8;gy_reg[2][5] <= -2;gy_reg[2][6] <= 0;
+			gy_reg[3][0] <= 0;gy_reg[3][1] <= 0;gy_reg[3][2] <= 0;gy_reg[3][3] <= 0;gy_reg[3][4] <= 0;gy_reg[3][5] <= 0;gy_reg[3][6] <= 0;
+			gy_reg[4][0] <= 0;gy_reg[4][1] <= 2;gy_reg[4][2] <= 8;gy_reg[4][3] <= 12;gy_reg[4][4] <= 8;gy_reg[4][5] <= 2;gy_reg[4][6] <= 0;
+			gy_reg[5][0] <= 0;gy_reg[5][1] <= 1;gy_reg[5][2] <= 4;gy_reg[5][3] <= 6;gy_reg[5][4] <= 4;gy_reg[5][5] <= 1;gy_reg[5][6] <= 0;
+			gy_reg[6][0] <= 0;gy_reg[6][1] <= 0;gy_reg[6][2] <= 0;gy_reg[6][3] <= 0;gy_reg[6][4] <= 0;gy_reg[6][5] <= 0;gy_reg[6][6] <= 0;
 			
-			gx_reg11 <= 0;gx_reg12 <= 0;gx_reg13 <= 0;gx_reg14 <= 0;gx_reg15 <= 0;gx_reg16 <= 0;gx_reg17 <= 0;
-			gx_reg21 <= 0;gx_reg22 <= -1;gx_reg23 <= -2;gx_reg24 <= 0;gx_reg25 <= 2;gx_reg26 <= 1;gx_reg27 <= 0;
-			gx_reg31 <= 0;gx_reg32 <= -4;gx_reg33 <= -8;gx_reg34 <= 0;gx_reg35 <= 8;gx_reg36 <= 4;gx_reg37 <= 0;
-			gx_reg41 <= 0;gx_reg42 <= -6;gx_reg43 <= -12;gx_reg44 <= 0;gx_reg45 <= 12;gx_reg46 <= 6;gx_reg47 <= 0;
-			gx_reg51 <= 0;gx_reg52 <= -4;gx_reg53 <= -8;gx_reg54 <= 0;gx_reg55 <= 8;gx_reg56 <= 4;gx_reg57 <= 0;
-			gx_reg61 <= 0;gx_reg62 <= -1;gx_reg63 <= -2;gx_reg64 <= 0;gx_reg65 <= 2;gx_reg66 <= 1;gx_reg67 <= 0;
-			gx_reg71 <= 0;gx_reg72 <= 0;gx_reg73 <= 0;gx_reg74 <= 0;gx_reg75 <= 0;gx_reg76 <= 0;gx_reg77 <= 0;
+			gx_reg[0][0] <= 0;gx_reg[0][1] <= 0;gx_reg[0][2] <= 0;gx_reg[0][3] <= 0;gx_reg[0][4] <= 0;gx_reg[0][5] <= 0;gx_reg[0][6] <= 0;
+			gx_reg[1][0] <= 0;gx_reg[1][1] <= -1;gx_reg[1][2] <= -2;gx_reg[1][3] <= 0;gx_reg[1][4] <= 2;gx_reg[1][5] <= 1;gx_reg[1][6] <= 0;
+			gx_reg[2][0] <= 0;gx_reg[2][1] <= -4;gx_reg[2][2] <= -8;gx_reg[2][3] <= 0;gx_reg[2][4] <= 8;gx_reg[2][5] <= 4;gx_reg[2][6] <= 0;
+			gx_reg[3][0] <= 0;gx_reg[3][1] <= -6;gx_reg[3][2] <= -12;gx_reg[3][3] <= 0;gx_reg[3][4] <= 12;gx_reg[3][5] <= 6;gx_reg[3][6] <= 0;
+			gx_reg[4][0] <= 0;gx_reg[4][1] <= -4;gx_reg[4][2] <= -8;gx_reg[4][3] <= 0;gx_reg[4][4] <= 8;gx_reg[4][5] <= 4;gx_reg[4][6] <= 0;
+			gx_reg[5][0] <= 0;gx_reg[5][1] <= -1;gx_reg[5][2] <= -2;gx_reg[5][3] <= 0;gx_reg[5][4] <= 2;gx_reg[5][5] <= 1;gx_reg[5][6] <= 0;
+			gx_reg[6][0] <= 0;gx_reg[6][1] <= 0;gx_reg[6][2] <= 0;gx_reg[6][3] <= 0;gx_reg[6][4] <= 0;gx_reg[6][5] <= 0;gx_reg[6][6] <= 0;
 			threshold <= 50;
 		end
 		else if(kernel_size_read==3)begin
-			gy_reg11 <= 0;gy_reg12 <= 0;gy_reg13 <= 0;gy_reg14 <= 0;gy_reg15 <= 0;gy_reg16 <= 0;gy_reg17 <= 0;
-			gy_reg21 <= 0;gy_reg22 <= 0;gy_reg23 <= 0;gy_reg24 <= 0;gy_reg25 <= 0;gy_reg26 <= 0;gy_reg27 <= 0;
-			gy_reg31 <= 0;gy_reg32 <= 0;gy_reg33 <= -1;gy_reg34 <= -2;gy_reg35 <= -1;gy_reg36 <= 0;gy_reg37 <= 0;
-			gy_reg41 <= 0;gy_reg42 <= 0;gy_reg43 <= 0;gy_reg44 <= 0;gy_reg45 <= 0;gy_reg46 <= 0;gy_reg47 <= 0;
-			gy_reg51 <= 0;gy_reg52 <= 0;gy_reg53 <= 1;gy_reg54 <= 2;gy_reg55 <= 1;gy_reg56 <= 0;gy_reg57 <= 0;
-			gy_reg61 <= 0;gy_reg62 <= 0;gy_reg63 <= 0;gy_reg64 <= 0;gy_reg65 <= 0;gy_reg66 <= 0;gy_reg67 <= 0;
-			gy_reg71 <= 0;gy_reg72 <= 0;gy_reg73 <= 0;gy_reg74 <= 0;gy_reg75 <= 0;gy_reg76 <= 0;gy_reg77 <= 0;
+			gy_reg[0][0] <= 0;gy_reg[0][1] <= 0;gy_reg[0][2] <= 0;gy_reg[0][3] <= 0;gy_reg[0][4] <= 0;gy_reg[0][5] <= 0;gy_reg[0][6] <= 0;
+			gy_reg[1][0] <= 0;gy_reg[1][1] <= 0;gy_reg[1][2] <= 0;gy_reg[1][3] <= 0;gy_reg[1][4] <= 0;gy_reg[1][5] <= 0;gy_reg[1][6] <= 0;
+			gy_reg[2][0] <= 0;gy_reg[2][1] <= 0;gy_reg[2][2] <= -1;gy_reg[2][3] <= -2;gy_reg[2][4] <= -1;gy_reg[2][5] <= 0;gy_reg[2][6] <= 0;
+			gy_reg[3][0] <= 0;gy_reg[3][1] <= 0;gy_reg[3][2] <= 0;gy_reg[3][3] <= 0;gy_reg[3][4] <= 0;gy_reg[3][5] <= 0;gy_reg[3][6] <= 0;
+			gy_reg[4][0] <= 0;gy_reg[4][1] <= 0;gy_reg[4][2] <= 1;gy_reg[4][3] <= 2;gy_reg[4][4] <= 1;gy_reg[4][5] <= 0;gy_reg[4][6] <= 0;
+			gy_reg[5][0] <= 0;gy_reg[5][1] <= 0;gy_reg[5][2] <= 0;gy_reg[5][3] <= 0;gy_reg[5][4] <= 0;gy_reg[5][5] <= 0;gy_reg[5][6] <= 0;
+			gy_reg[6][0] <= 0;gy_reg[6][1] <= 0;gy_reg[6][2] <= 0;gy_reg[6][3] <= 0;gy_reg[6][4] <= 0;gy_reg[6][5] <= 0;gy_reg[6][6] <= 0;
 			
-			gx_reg11 <= 0;gx_reg12 <= 0;gx_reg13 <= 0;gx_reg14 <= 0;gx_reg15 <= 0;gx_reg16 <= 0;gx_reg17 <= 0;
-			gx_reg21 <= 0;gx_reg22 <= 0;gx_reg23 <= 0;gx_reg24 <= 0;gx_reg25 <= 0;gx_reg26 <= 0;gx_reg27 <= 0;
-			gx_reg31 <= 0;gx_reg32 <= 0;gx_reg33 <= -1;gx_reg34 <= 0;gx_reg35 <= 1;gx_reg36 <= 0;gx_reg37 <= 0;
-			gx_reg41 <= 0;gx_reg42 <= 0;gx_reg43 <= -2;gx_reg44 <= 0;gx_reg45 <= 2;gx_reg46 <= 0;gx_reg47 <= 0;
-			gx_reg51 <= 0;gx_reg52 <= 0;gx_reg53 <= -1;gx_reg54 <= 0;gx_reg55 <= 1;gx_reg56 <= 0;gx_reg57 <= 0;
-			gx_reg61 <= 0;gx_reg62 <= 0;gx_reg63 <= 0;gx_reg64 <= 0;gx_reg65 <= 0;gx_reg66 <= 0;gx_reg67 <= 0;
-			gx_reg71 <= 0;gx_reg72 <= 0;gx_reg73 <= 0;gx_reg74 <= 0;gx_reg75 <= 0;gx_reg76 <= 0;gx_reg77 <= 0;
+			gx_reg[0][0] <= 0;gx_reg[0][1] <= 0;gx_reg[0][2] <= 0;gx_reg[0][3] <= 0;gx_reg[0][4] <= 0;gx_reg[0][5] <= 0;gx_reg[0][6] <= 0;
+			gx_reg[1][0] <= 0;gx_reg[1][1] <= 0;gx_reg[1][2] <= 0;gx_reg[1][3] <= 0;gx_reg[1][4] <= 0;gx_reg[1][5] <= 0;gx_reg[1][6] <= 0;
+			gx_reg[2][0] <= 0;gx_reg[2][1] <= 0;gx_reg[2][2] <= -1;gx_reg[2][3] <= 0;gx_reg[2][4] <= 1;gx_reg[2][5] <= 0;gx_reg[2][6] <= 0;
+			gx_reg[3][0] <= 0;gx_reg[3][1] <= 0;gx_reg[3][2] <= -2;gx_reg[3][3] <= 0;gx_reg[3][4] <= 2;gx_reg[3][5] <= 0;gx_reg[3][6] <= 0;
+			gx_reg[4][0] <= 0;gx_reg[4][1] <= 0;gx_reg[4][2] <= -1;gx_reg[4][3] <= 0;gx_reg[4][4] <= 1;gx_reg[4][5] <= 0;gx_reg[4][6] <= 0;
+			gx_reg[5][0] <= 0;gx_reg[5][1] <= 0;gx_reg[5][2] <= 0;gx_reg[5][3] <= 0;gx_reg[5][4] <= 0;gx_reg[5][5] <= 0;gx_reg[5][6] <= 0;
+			gx_reg[6][0] <= 0;gx_reg[6][1] <= 0;gx_reg[6][2] <= 0;gx_reg[6][3] <= 0;gx_reg[6][4] <= 0;gx_reg[6][5] <= 0;gx_reg[6][6] <= 0;
 			threshold <= 30;
 		end
 		init_image_parameter_finish <= True;
@@ -361,16 +259,15 @@ module mkAXIConverter(AXIConverter);
   	
   	/* Initialize row buffer at the first time, since slide window operate correctly only if row buffer 1 and row buffer 2 are already filled */
    	Reg#(Bit#(32)) count_FIFOchop <- mkReg(0); //Use only a part of FIFO depending on image length
-   	rule rowBufferInital if(rowBuffer_inital == True && rowBuffer_1.notFull() == True && 
-   				rowBuffer_2.notFull() == True && init_image_parameter_finish == True &&
-   				count_FIFOchop <= image_length-kernel_size -1 );
-   				
-	   	rowBuffer_1.enq(0); //Fill waste values until full
-		rowBuffer_2.enq(0); //Fill waste values until full
-	   	rowBuffer_3.enq(0); //Fill waste values until full
-		rowBuffer_4.enq(0); //Fill waste values until full
-	   	rowBuffer_5.enq(0); //Fill waste values until full
-		rowBuffer_6.enq(0); //Fill waste values until full
+   	rule rowBufferInital if(rowBuffer_inital == True && rowBuffer_array[0].notFull() == True && 
+   				rowBuffer_array[1].notFull() == True && init_image_parameter_finish == True &&
+   				count_FIFOchop <= image_length-kernel_size -1 );  				
+	   	rowBuffer_array[0].enq(0); //Fill waste values until full
+		rowBuffer_array[1].enq(0); //Fill waste values until full
+	   	rowBuffer_array[2].enq(0); //Fill waste values until full
+		rowBuffer_array[3].enq(0); //Fill waste values until full
+	   	rowBuffer_array[4].enq(0); //Fill waste values until full
+		rowBuffer_array[5].enq(0); //Fill waste values until full
 		count_FIFOchop <= count_FIFOchop +1;
 		//$display("Test Here 1");	
    	endrule
@@ -383,127 +280,39 @@ module mkAXIConverter(AXIConverter);
    	endrule
    	
    	/* Initialize window buffer, Fill up all pixels of 3x3 kernel and row 1 and row2, ready for next processing step */
-	Reg#(Bit#(8)) reg11 <- mkReg(0);
-	Reg#(Bit#(8)) reg12 <- mkReg(0);
-	Reg#(Bit#(8)) reg13 <- mkReg(0);
-	Reg#(Bit#(8)) reg14 <- mkReg(0);
-	Reg#(Bit#(8)) reg15 <- mkReg(0);
-	Reg#(Bit#(8)) reg16 <- mkReg(0);   
-	Reg#(Bit#(8)) reg17 <- mkReg(0);
 
-	Reg#(Bit#(8)) reg21 <- mkReg(0);
-	Reg#(Bit#(8)) reg22 <- mkReg(0);
-	Reg#(Bit#(8)) reg23 <- mkReg(0);
-	Reg#(Bit#(8)) reg24 <- mkReg(0);
-	Reg#(Bit#(8)) reg25 <- mkReg(0);
-	Reg#(Bit#(8)) reg26 <- mkReg(0);   
-	Reg#(Bit#(8)) reg27 <- mkReg(0);
-
-	Reg#(Bit#(8)) reg31 <- mkReg(0);
-	Reg#(Bit#(8)) reg32 <- mkReg(0);
-	Reg#(Bit#(8)) reg33 <- mkReg(0);
-	Reg#(Bit#(8)) reg34 <- mkReg(0);
-	Reg#(Bit#(8)) reg35 <- mkReg(0);
-	Reg#(Bit#(8)) reg36 <- mkReg(0);   
-	Reg#(Bit#(8)) reg37 <- mkReg(0);
-
-	Reg#(Bit#(8)) reg41 <- mkReg(0);
-	Reg#(Bit#(8)) reg42 <- mkReg(0);
-	Reg#(Bit#(8)) reg43 <- mkReg(0);
-	Reg#(Bit#(8)) reg44 <- mkReg(0);
-	Reg#(Bit#(8)) reg45 <- mkReg(0);
-	Reg#(Bit#(8)) reg46 <- mkReg(0);   
-	Reg#(Bit#(8)) reg47 <- mkReg(0);
-
-	Reg#(Bit#(8)) reg51 <- mkReg(0);
-	Reg#(Bit#(8)) reg52 <- mkReg(0);
-	Reg#(Bit#(8)) reg53 <- mkReg(0);
-	Reg#(Bit#(8)) reg54 <- mkReg(0);
-	Reg#(Bit#(8)) reg55 <- mkReg(0);
-	Reg#(Bit#(8)) reg56 <- mkReg(0);   
-	Reg#(Bit#(8)) reg57 <- mkReg(0);
-
-	Reg#(Bit#(8)) reg61 <- mkReg(0);
-	Reg#(Bit#(8)) reg62 <- mkReg(0);
-	Reg#(Bit#(8)) reg63 <- mkReg(0);
-	Reg#(Bit#(8)) reg64 <- mkReg(0);
-	Reg#(Bit#(8)) reg65 <- mkReg(0);
-	Reg#(Bit#(8)) reg66 <- mkReg(0);   
-	Reg#(Bit#(8)) reg67 <- mkReg(0);
-
-	Reg#(Bit#(8)) reg71 <- mkReg(0);
-	Reg#(Bit#(8)) reg72 <- mkReg(0);
-	Reg#(Bit#(8)) reg73 <- mkReg(0);
-	Reg#(Bit#(8)) reg74 <- mkReg(0);
-	Reg#(Bit#(8)) reg75 <- mkReg(0);
-	Reg#(Bit#(8)) reg76 <- mkReg(0);   
-	Reg#(Bit#(8)) reg77 <- mkReg(0); 
+	Vector#(49, Bit#(8)) vec1 = newVector;
+	Reg#(Bit#(8)) slideWindow_reg[7][7];
+	for (Integer i=0; i<7; i=i+1)
+		for (Integer j=0; j<7; j=j+1)
+			slideWindow_reg[i][j] <- mkReg(0);
+				
 	
 	Reg#(Bool) slide <- mkReg(False);    //command register
 	Reg#(Bool) slide_finish <- mkReg(False);    //status register	
 	Reg#(Bit#(32)) slide_position <- mkReg(0); //Count from 0
 	Reg#(Bit#(8)) state_temp <- mkReg(0);
 	
-	Reg#(Bool) windowBuffer_once_inital <- mkReg(False);    //status register	
+	Reg#(Bool) windowBuffer_once_inital <- mkReg(False);    //status register
 	rule windowBuffer_inital if(window_Initial == True && rowBuffer_inital == False );
 	  	//$display("Test Here 5");
-	   	reg11 <= reg12; 
-		reg12 <= reg13;
-		reg13 <= reg14;
-		reg14 <= reg15;
-		reg15 <= reg16;
-		reg16 <= reg17;
-		reg17 <= rowBuffer_1.first; rowBuffer_1.deq; 
-		rowBuffer_1.enq(reg21);		
-	   	//rowBuffer_1.enq(reg21); //$display("Test Here 6");
-		reg21 <= reg22;
-		reg22 <= reg23;
-		reg23 <= reg24;
-		reg24 <= reg25;
-		reg25 <= reg26;
-		reg26 <= reg27;
-		reg27 <= rowBuffer_2.first(); rowBuffer_2.deq;
-		rowBuffer_2.enq(reg31); //$display("Test Here 7");
-		reg31 <= reg32;
-		reg32 <= reg33;
-		reg33 <= reg34;
-		reg34 <= reg35;
-		reg35 <= reg36;
-		reg36 <= reg37;
-		reg37 <= rowBuffer_3.first(); rowBuffer_3.deq;
-		rowBuffer_3.enq(reg41); //$display("Test Here 8");
-		reg41 <= reg42;
-		reg42 <= reg43;
-		reg43 <= reg44;
-		reg44 <= reg45;
-		reg45 <= reg46;
-		reg46 <= reg47;
-		reg47 <= rowBuffer_4.first(); rowBuffer_4.deq;
-		rowBuffer_4.enq(reg51); //$display("Test Here 9");
-		reg51 <= reg52;
-		reg52 <= reg53;
-		reg53 <= reg54;
-		reg54 <= reg55;
-		reg55 <= reg56;
-		reg56 <= reg57;
-		reg57 <= rowBuffer_5.first(); rowBuffer_5.deq;
-		rowBuffer_5.enq(reg61); //$display("Test Here 10");
-		reg61 <= reg62;
-		reg62 <= reg63;
-		reg63 <= reg64;
-		reg64 <= reg65;
-		reg65 <= reg66;
-		reg66 <= reg67;
-		reg67 <= rowBuffer_6.first(); rowBuffer_6.deq;
-		rowBuffer_6.enq(reg71);
-		reg71 <= reg72;
-		reg72 <= reg73;
-		reg73 <= reg74;
-		reg74 <= reg75;
-		reg75 <= reg76;
-		reg76 <= reg77;
-		reg77 <= buffer_8bit.first(); buffer_8bit.deq; //PAY ATTENTION, REPLACE "testslideWindow" WITH "buffer_8bit" to get data via AXI
-		//$display("%d Reg77", reg77);
+	  	for (Integer i=0; i<7; i=i+1)
+			for (Integer j=0; j<6; j=j+1)
+				slideWindow_reg[i][j] <= slideWindow_reg[i][j+1];
+		
+		for (Integer i=0; i<6; i=i+1)
+		 	rowBuffer_array[i].enq(slideWindow_reg[i+1][0]);
+		 		
+		for (Integer i=0; i<7; i=i+1) begin
+			if (i == 6) begin
+				slideWindow_reg[i][6] <= buffer_8bit.first(); buffer_8bit.deq; //PAY ATTENTION, REPLACE "testslideWindow" WITH "buffer_8bit" to get data via AXI
+			end
+			else begin
+		 		slideWindow_reg[i][6] <= rowBuffer_array[i].first; rowBuffer_array[i].deq; 
+		 	end
+		end
+		 	
+		//$display("%d Reg77", slideWindow_reg[6][6]);
 		bufferRowCount <= bufferRowCount + 1;
 		slide_finish <= True;
 		if( slide_position < image_length)
@@ -527,57 +336,25 @@ module mkAXIConverter(AXIConverter);
 		//$display("slide position %d pixel read %d",slide_position,bufferRowCount);
 	endrule
 	
-	  
- 	
  	Reg#(Int#(32)) sum_1 <- mkReg(0);
  	rule pre_sobelOperator1 if (pre_sobelConvert == True && slide_position != 1 &&  slide_position != 2 && 
  			slide_position != 3 &&  slide_position != 4 &&  slide_position != 5 &&  slide_position != 6 ); //calculate first sum of the sober operator
-		sum_1 <= signExtend(gx_reg11*unpack(zExtend(reg11)) + gx_reg12*unpack(zExtend(reg12)) + gx_reg13*unpack(zExtend(reg13))+ gx_reg14*unpack(zExtend(reg14)) + 			gx_reg15*unpack(zExtend(reg15)) + gx_reg16*unpack(zExtend(reg16))+ gx_reg17*unpack(zExtend(reg17)) +
-		
-		gx_reg21*unpack(zExtend(reg21)) + gx_reg22*unpack(zExtend(reg22)) + gx_reg23*unpack(zExtend(reg23))+ gx_reg24*unpack(zExtend(reg24)) + 
-		gx_reg25*unpack(zExtend(reg25)) + gx_reg26*unpack(zExtend(reg26))+ gx_reg27*unpack(zExtend(reg27)) +
-		
-		gx_reg31*unpack(zExtend(reg31)) + gx_reg32*unpack(zExtend(reg32)) + gx_reg33*unpack(zExtend(reg33))+ gx_reg34*unpack(zExtend(reg34)) + 
-		gx_reg35*unpack(zExtend(reg35)) + gx_reg36*unpack(zExtend(reg36))+ gx_reg37*unpack(zExtend(reg37)) +
-		
-		gx_reg41*unpack(zExtend(reg41)) + gx_reg42*unpack(zExtend(reg42)) + gx_reg43*unpack(zExtend(reg43))+ gx_reg44*unpack(zExtend(reg44)) + 
-		gx_reg45*unpack(zExtend(reg45)) + gx_reg46*unpack(zExtend(reg46))+ gx_reg47*unpack(zExtend(reg47)) +
-		
-		gx_reg51*unpack(zExtend(reg51)) + gx_reg52*unpack(zExtend(reg52)) + gx_reg53*unpack(zExtend(reg53))+ gx_reg54*unpack(zExtend(reg54)) + 
-		gx_reg55*unpack(zExtend(reg55)) + gx_reg56*unpack(zExtend(reg56))+ gx_reg57*unpack(zExtend(reg57)) +
-		
-		gx_reg61*unpack(zExtend(reg61)) + gx_reg62*unpack(zExtend(reg62)) + gx_reg63*unpack(zExtend(reg63))+ gx_reg64*unpack(zExtend(reg64)) + 
-		gx_reg65*unpack(zExtend(reg65)) + gx_reg66*unpack(zExtend(reg66))+ gx_reg67*unpack(zExtend(reg67)) +
-		
-		gx_reg71*unpack(zExtend(reg71)) + gx_reg72*unpack(zExtend(reg72)) + gx_reg73*unpack(zExtend(reg73))+ gx_reg74*unpack(zExtend(reg74)) + 
-		gx_reg75*unpack(zExtend(reg75)) + gx_reg76*unpack(zExtend(reg76))+ gx_reg77*unpack(zExtend(reg77)));	
-			
+ 		Int#(32) sum_1_tmp =0;
+ 		for (Integer i=0; i<7; i=i+1)
+			for (Integer j=0; j<7; j=j+1)
+				sum_1_tmp = sum_1_tmp + gx_reg[i][j]*unpack(zExtend(slideWindow_reg[i][j]));
+		sum_1 <= signExtend(sum_1_tmp);			
 	endrule
  	
  	Reg#(Int#(32)) sum_2 <- mkReg(0);
  	rule pre_sobelOperator2 if (pre_sobelConvert == True && slide_position != 1 &&  slide_position != 2 &&  
 			slide_position != 3 &&  slide_position != 4 &&  slide_position != 5 &&  slide_position != 6 ); //calculate first sum of the sober operator
-		sum_2 <= signExtend(gy_reg11*unpack(zExtend(reg11)) + gy_reg12*unpack(zExtend(reg12)) + gy_reg13*unpack(zExtend(reg13))+ gy_reg14*unpack(zExtend(reg14)) + 			gy_reg15*unpack(zExtend(reg15)) + gy_reg16*unpack(zExtend(reg16))+ gy_reg17*unpack(zExtend(reg17)) +
-		
-		gy_reg21*unpack(zExtend(reg21)) + gy_reg22*unpack(zExtend(reg22)) + gy_reg23*unpack(zExtend(reg23))+ gy_reg24*unpack(zExtend(reg24)) + 
-		gy_reg25*unpack(zExtend(reg25)) + gy_reg26*unpack(zExtend(reg26))+ gy_reg27*unpack(zExtend(reg27)) +
-		
-		gy_reg31*unpack(zExtend(reg31)) + gy_reg32*unpack(zExtend(reg32)) + gy_reg33*unpack(zExtend(reg33))+ gy_reg34*unpack(zExtend(reg34)) + 
-		gy_reg35*unpack(zExtend(reg35)) + gy_reg36*unpack(zExtend(reg36))+ gy_reg37*unpack(zExtend(reg37)) +
-		
-		gy_reg41*unpack(zExtend(reg41)) + gy_reg42*unpack(zExtend(reg42)) + gy_reg43*unpack(zExtend(reg43))+ gy_reg44*unpack(zExtend(reg44)) + 
-		gy_reg45*unpack(zExtend(reg45)) + gy_reg46*unpack(zExtend(reg46))+ gy_reg47*unpack(zExtend(reg47)) +
-		
-		gy_reg51*unpack(zExtend(reg51)) + gy_reg52*unpack(zExtend(reg52)) + gy_reg53*unpack(zExtend(reg53))+ gy_reg54*unpack(zExtend(reg54)) + 
-		gy_reg55*unpack(zExtend(reg55)) + gy_reg56*unpack(zExtend(reg56))+ gy_reg57*unpack(zExtend(reg57)) +
-		
-		gy_reg61*unpack(zExtend(reg61)) + gy_reg62*unpack(zExtend(reg62)) + gy_reg63*unpack(zExtend(reg63))+ gy_reg64*unpack(zExtend(reg64)) + 
-		gy_reg65*unpack(zExtend(reg65)) + gy_reg66*unpack(zExtend(reg66))+ gy_reg67*unpack(zExtend(reg67)) +
-		
-		gy_reg71*unpack(zExtend(reg71)) + gy_reg72*unpack(zExtend(reg72)) + gy_reg73*unpack(zExtend(reg73))+ gy_reg74*unpack(zExtend(reg74)) + 
-		gy_reg75*unpack(zExtend(reg75)) + gy_reg76*unpack(zExtend(reg76))+ gy_reg77*unpack(zExtend(reg77)));
-			
-			
+		Int#(32) sum_2_tmp =0;
+ 		for (Integer i=0; i<7; i=i+1)
+			for (Integer j=0; j<7; j=j+1)
+				sum_2_tmp = sum_2_tmp + gy_reg[i][j]*unpack(zExtend(slideWindow_reg[i][j]));
+		sum_2 <= signExtend(sum_2_tmp);	
+					
 		if(sobelConvert==False  && bufferRowCount < image_length*image_width) begin
 			sobelConvert <= True;
 		end
@@ -585,9 +362,8 @@ module mkAXIConverter(AXIConverter);
 			sobelConvert <= False;
 		end	
 	endrule
-	
-	
- 	
+
+
 	FIFOF#(Bit#(128)) buffer_out <- mkSizedFIFOF(100);
    	Reg#(Bit#(128)) out_hold <- mkReg(0);
    	Reg#(Bit#(8)) out_count <- mkReg(0);
@@ -661,7 +437,7 @@ module mkAXIConverter(AXIConverter);
 	   		buffer_out.enq(tmp);
 	   		//conversion_finished <= 1;
 		end
-		//$display("Finish Filter read input pixel %d, output pixel value is %d, slide position",bufferRowCount,outPixel,slide_position); 
+		$display("Finish Filter read input pixel %d, output pixel value is %d, slide position",bufferRowCount,outPixel,slide_position); 
    	endrule
 
    	Reg#(Bool) wnext <- mkReg(True);
