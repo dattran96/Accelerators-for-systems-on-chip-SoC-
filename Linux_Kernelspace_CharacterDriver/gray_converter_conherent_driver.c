@@ -10,8 +10,8 @@
 #include <linux/io.h>
 #include <linux/dma-mapping.h>
 
-#define RGB_SIZE 4194304
-#define GRAY_SIZE 2097152
+#define RGB_SIZE 8388608 	
+#define GRAY_SIZE 3145728
 #define IOSTART 0x200
 #define IOEXTEND 0x40
 //#define base_addr 0x00A0000000
