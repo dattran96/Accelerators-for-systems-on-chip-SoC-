@@ -1,4 +1,4 @@
- #include <linux/kernel.h>
+#include <linux/kernel.h>
 //#include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kdev_t.h>
@@ -19,8 +19,8 @@ dev_t dev = 0;
 static struct class*dev_class;
 static struct cdev my_cdev;
 uint8_t * mem_pointer;
-uint32_t  device_read;
-uint32_t *  write_value;
+uint64_t  device_read;
+uint64_t *  write_value;
 
 static int __init chr_driver_init(void);
 static void __exit chr_driver_exit(void);
@@ -66,7 +66,7 @@ static my_release(struct inode*inode,struct file*file)
 
 static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 {
-	device_read= ioread32(mapped + 8);
+	device_read= ioread64(mapped + 16);
 	copy_to_user(buf,&device_read + (*off) ,len); 
 	printk(KERN_INFO"Data read: DONE...\n");
 	return len;
@@ -74,11 +74,11 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
  
 static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff_t*off)
 {
-	mapped = ioremap(base_addr,12); 
+	mapped = ioremap(base_addr,24); 
 	copy_from_user(mem_pointer,buf,len);
-	write_value = (uint32_t*)mem_pointer; 
-	iowrite32(*(write_value),mapped);
-	iowrite32(*(write_value+1),mapped + 4);
+	write_value = (uint64_t*)mem_pointer; 
+	iowrite64(*(write_value),mapped);
+	iowrite64(*(write_value+1),mapped + 8);
 	return len;
 }
 
