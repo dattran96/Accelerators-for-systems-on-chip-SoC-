@@ -52,6 +52,7 @@ static device_release(struct inode*inode,struct file*file)
 
 static ssize_t device_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 {
+	
 	uint64_t data_read;
 	data_read = ioread64(mapped_address + 16);
 
@@ -66,7 +67,12 @@ static ssize_t device_read(struct file*filp, char __user*buf,size_t len, loff_t*
 static ssize_t device_write(struct file*filp, const char __user*buf,size_t len, loff_t*off)
 {
 	size_t maxdatalen = 30;
-	uint8_t databuf[maxdatalen];
+	uint8_t* databuf;
+	if ((databuf = kmalloc(maxdatalen,GFP_KERNEL)) == 0)
+	{
+		printk(KERN_INFO"Cannot allocate memory \n");
+		return -1;
+	}
 	
 	// Read data from user buffer to my driver buffer
 	if(copy_from_user(databuf, buf, len))
@@ -75,7 +81,7 @@ static ssize_t device_write(struct file*filp, const char __user*buf,size_t len, 
 	uint64_t *data_write = (uint64_t *) databuf;
 	mapped_address = ioremap(base_addr, 24); 
 
-	iowrite64(*data_write, mapped_address);
+	iowrite64(*(data_write), mapped_address);
 	iowrite64(*(data_write + 1), mapped_address + 8);
 				
 	printk(KERN_INFO"Data is written sucessfully \n");
