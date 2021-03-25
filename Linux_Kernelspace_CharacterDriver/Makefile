@@ -1,4 +1,4 @@
-TARGET_MODULE:=task3_driver
+TARGET_MODULE:=multiplier_driver
 
 ifneq ($(KERNELRELEASE),)
 	#$(TARGET_MODULE)-objs := $(TARGET_MODULE).o

@@ -1,5 +1,4 @@
  #include <linux/kernel.h>
-//#include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kdev_t.h>
 #include <linux/fs.h>
@@ -16,18 +15,14 @@ static void __iomem *mapped_address;
 dev_t dev = 0;
 static struct class *mychardev_class ;
 static struct cdev cdev;
-uint8_t *data_pointer;
 
 
-uint8_t *start_convert;
-uint8_t *finish_convert;
-
-static int __init chr_driver_init(void);
-static void __exit chr_driver_exit(void);
 static int device_open(struct inode*inode, struct file*file);
 static int device_release(struct inode*inode,struct file * file);
 static ssize_t device_read(struct file*filp, char __user*buf,size_t len,loff_t*off);
 static ssize_t device_write(struct file*filp,const char *buf, size_t len,loff_t* off);
+static int __init chr_driver_init(void);
+static void __exit chr_driver_exit(void);
 
 
 static struct file_operations fops = 
@@ -57,13 +52,11 @@ static device_release(struct inode*inode,struct file*file)
 
 static ssize_t device_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 {
-	uint64_t *data_read;
-	uint8_t *data_user;
-	*data_read = ioread64(mapped_address + 16);
+	uint64_t data_read;
+	data_read = ioread64(mapped_address + 16);
 
-	data_user = (uint8_t *)data_read;
 
-	if(copy_to_user(buf, data_user, len))
+	if(copy_to_user(buf, &data_read, len))
 		return -EFAULT;  
 
 	printk(KERN_INFO"Data is read sucessfully \n");
@@ -74,16 +67,16 @@ static ssize_t device_write(struct file*filp, const char __user*buf,size_t len, 
 {
 	size_t maxdatalen = 30;
 	uint8_t databuf[maxdatalen];
-	uint64_t data_write[maxdatalen];
-	// Read data from user buffer to my driver buffer 
+	
+	// Read data from user buffer to my driver buffer
 	if(copy_from_user(databuf, buf, len))
 		return -EFAULT;
-	data_write = (uint64_t*) databuf;
-	
+
+	uint64_t *data_write = (uint64_t *) databuf;
 	mapped_address = ioremap(base_addr, 24); 
 
-	iowrite64(data_write, mapped_address);
-	iowrite64(data_write + 1, mapped_address + 8);
+	iowrite64(*data_write, mapped_address);
+	iowrite64(*(data_write + 1), mapped_address + 8);
 				
 	printk(KERN_INFO"Data is written sucessfully \n");
 	return len;
@@ -119,7 +112,7 @@ static int __init chr_driver_init(void)
 	}
 
 	/*creating device*/
-	if((device_create(mychardev_class ,NULL,dev,NULL,"my_device")) == NULL){
+	if((device_create(mychardev_class ,NULL,dev,NULL,"my_character_device")) == NULL){
 		printk(KERN_INFO "cannot create the device ..\n");
 		goto remove_device;
 	}	
