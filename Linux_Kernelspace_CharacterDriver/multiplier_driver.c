@@ -36,6 +36,8 @@ static struct file_operations fops =
 
 static struct device dev_struct = {
 	.init_name = "dev_task2",
+	.coherent_dma_mask = ~0,
+	.dma_mask = &dev_struct.coherent_dma_mask,
 };
 
 static int device_open(struct inode*inode,struct file*file)
