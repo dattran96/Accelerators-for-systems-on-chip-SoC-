@@ -10,7 +10,7 @@
 #include <linux/io.h>
 #include <linux/dma-mapping.h>
 
-#define RGB_SIZE 8388608 	
+#define RGB_SIZE 8388608
 #define GRAY_SIZE 3145728
 #define IOSTART 0x200
 #define IOEXTEND 0x40
@@ -90,18 +90,18 @@ static ssize_t my_read(struct file*filp, char __user*buf,size_t len, loff_t*off)
 {
 	
 	device_read = ioread64(mapped);
-	printk(KERN_INFO"Address 1 get back is %d\n",device_read);
+	printk(KERN_INFO"Address 1 get back is %d \n",device_read);
 
 	device_read = ioread64 (mapped + 8);
-	printk(KERN_INFO"Address 2 get back is %d\n",device_read);
+	printk(KERN_INFO"Address 2 get back is %d \n",device_read);
 	
 	device_read= ioread32(mapped + 32);
-	printk(KERN_INFO"Size  get back is %d\n",device_read);
+	printk(KERN_INFO"Size  get back is %d \n",device_read);
 
 
 	device_read= ioread32(mapped + 16);
-	printk(KERN_INFO"Start  get back is %d\n",device_read);
-	
+	printk(KERN_INFO"Start  get back is %d \n",device_read);
+
 	copy_to_user(buf,gray_mem_pointer + (*off) ,len); 
 	printk(KERN_INFO"Data read: DONE...\n");
 	return len;
@@ -112,7 +112,7 @@ static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff
 	copy_from_user(rgb_mem_pointer + (*off),buf,len);
 	printk(KERN_INFO"Data is written sucessfully \n");
 	
-	mapped = ioremap(base_addr,40); //for 5 registers 
+	mapped = ioremap(base_addr,56); //for 5 registers 
 
 	printk(KERN_INFO"dma mapping sucessfully\n");
 	
@@ -123,10 +123,9 @@ static ssize_t my_write(struct file*filp, const char __user*buf,size_t len, loff
 	iowrite64((uint32_t)dma_gray,mapped + 8);
 
 	printk(KERN_INFO"Address 2 is %d \n",(uint64_t)dma_gray);
-	
 
 	iowrite32(1,mapped + 16);
-	printk(KERN_INFO"Trigger is active \n");			
+	printk(KERN_INFO"Trigger is active \n");	
 	return len;
 }
 
@@ -149,7 +148,7 @@ static int __init chr_driver_init(void)
 
 /*Adding character device to the system*/
 	if((cdev_add(&my_cdev,dev,1)) < 0) {
-		printk(KERN_INFO"Cannot add the device to the system\n");
+		printk(KERN_INFO"Cannot add the device to the system \n");
 		goto r_class;
 	}
 
