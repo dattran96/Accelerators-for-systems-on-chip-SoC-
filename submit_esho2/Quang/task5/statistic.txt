@@ -1,0 +1,54 @@
+axi full:
+
+___dma coherent driver___
+-----------------------
+image size: 2048 x 1243
+kernel size:3
+computation time: 0.0979484s
+fps:
+bandwidth:
+-----------------------  
+
+
+-----------------------
+image size:2048 x 1243
+kernel size:5
+computation time: 0.0982014s
+fps:
+bandwidth:
+-----------------------
+
+-----------------------
+image size:2048 x 1243
+kernel size:7
+computation time:  0.0978729s
+fps:
+bandwidth:
+-----------------------
+
+
+___dma map single driver___
+-----------------------
+image size: 2048 x 1243
+kernel size:3
+computation time: 0.0707707s
+fps:
+bandwidth:
+-----------------------  
+
+
+-----------------------
+image size:2048 x 1243
+kernel size:5
+computation time: 0.0708887s
+fps:
+bandwidth:
+-----------------------
+
+-----------------------
+image size:2048 x 1243
+kernel size:7
+computation time: 0.0728126s
+fps:
+bandwidth:
+-----------------------
