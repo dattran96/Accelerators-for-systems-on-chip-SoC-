@@ -24,17 +24,7 @@ int main() {
 	int height = image.height();
 	cout << "width" << width << endl;
 	cout << "height" << height << endl;
-	/*
-	for (int r = 0; r < height; r++)
-	{	for (int c = 0; c < width; c++)
-		{	 cout << "(" << r << "," << c << ") ="
-		              << " R" << (int)image(c,r,0,0)
-		              << " G" << (int)image(c,r,0,1)
-		              << " B" << (int)image(c,r,0,2) << endl;					
-		}
-	}
-	*/
-
+	
 	unsigned char*ptr = image.data(0,0);
 	unsigned char r = ptr[0];
 	unsigned char g = ptr[0+width*height];
@@ -67,8 +57,8 @@ int main() {
 		{	printf("Data is reading...\n");
 			pread(fd,Gray_img,width*height,786432 + 1024);
 			printf("Done...\n\n");
-			CImg<unsigned char> gotback_image(Gray_img,512,512,1,1,true);
-			gotback_image.save("lena_gray.png");
+			CImg<unsigned char> grayImage(Gray_img,512,512,1,1,true);
+			grayImage.save("lena_gray.png");
 			for (int c = 0; c < 262144; c++)
                 	{        
 				cout << c << "="
