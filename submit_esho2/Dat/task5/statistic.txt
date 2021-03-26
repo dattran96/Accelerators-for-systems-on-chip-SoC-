@@ -7,6 +7,7 @@ kernel size:3
 computation time:  0.0684598s
 fps:
 bandwidth:
+theshhold:30
 -----------------------  
 
 
@@ -16,6 +17,7 @@ kernel size:5
 computation time:  0.0687305s
 fps:
 bandwidth:
+theshhold:50
 -----------------------
 
 -----------------------
@@ -24,6 +26,7 @@ kernel size:7
 computation time:  0.0683934s
 fps:
 bandwidth:
+theshhold:70
 -----------------------
 
 ____________image 2____________(lena_gray.jpg)
@@ -33,6 +36,7 @@ kernel size:3
 computation time:  0.0418034s
 fps:
 bandwidth:
+theshhold:70
 -----------------------  
 
 
@@ -42,6 +46,7 @@ kernel size:5
 computation time:  0.0418141s
 fps:
 bandwidth:
+theshhold:50
 -----------------------
 
 -----------------------
@@ -50,5 +55,6 @@ kernel size:7
 computation time: 0.0417292s
 fps:
 bandwidth:
+theshhold:30
 -----------------------
 
